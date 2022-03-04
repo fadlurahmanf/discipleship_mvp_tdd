@@ -1,0 +1,96 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdkVersion 31
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        applicationId "com.fadlurahmanf.starter_app_mvp"
+        minSdkVersion 16
+        targetSdkVersion 31
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+
+        buildConfigField "String", "BASE_DEV_URL", "\"${DEV_BASE_URL}\""
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildFeatures{
+        viewBinding true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+//    flavorDimensions('tier')
+//    productFlavors {
+//        develop {
+//            buildConfigField("String", "BASE_DEV_URL", "\"88888888 develop\"")
+//            dimension 'tier'
+//        }
+//    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    testOptions{
+        animationsDisabled true
+    }
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    testImplementation "org.junit.jupiter:junit-jupiter:5.8.1"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    //testing mockito
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.2"
+    testImplementation "org.mockito:mockito-junit-jupiter:4.3.1"
+    testImplementation "org.mockito:mockito-inline:4.3.1"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
+
+    //test mock shared preference
+    testImplementation 'io.github.ivanshafran:shared-preferences-mock:1.2.4'
+
+    //testing espresso
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    //dagger dependency injection
+    implementation 'com.google.dagger:dagger:2.41'
+    kapt 'com.google.dagger:dagger-compiler:2.41'
+
+    //retrofit
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+
+    //rx java
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'io.reactivex.rxjava3:rxjava:3.1.1'
+
+    //work manager
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+    implementation "androidx.work:work-rxjava3:$work_version"
+
+    //shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+}
