@@ -5,6 +5,8 @@ import com.fadlurahmanf.starter_app_mvp.data.entity.core.CheckUpdateEntity
 import com.fadlurahmanf.starter_app_mvp.data.entity.core.LanguageEntity
 import com.fadlurahmanf.starter_app_mvp.data.model.core.CheckUpdateBody
 import com.fadlurahmanf.starter_app_mvp.data.repository.core.AppRepository
+import com.fadlurahmanf.starter_app_mvp.data.repository.core.AuthRepository
+import com.fadlurahmanf.starter_app_mvp.data.response.auth.LoginResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.core.BaseResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.core.CheckUpdateResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.core.LanguageResponse
@@ -23,6 +25,7 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 
 import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.inOrder
 
 @ExtendWith(MockitoExtension::class)
 class SplashPresenterTest{
@@ -31,6 +34,9 @@ class SplashPresenterTest{
 
     @Mock
     lateinit var checkUpdateEntity: CheckUpdateEntity
+
+    @Mock
+    lateinit var authRepository: AuthRepository
 
     @Mock
     lateinit var languageEntity: LanguageEntity
@@ -46,8 +52,9 @@ class SplashPresenterTest{
     @BeforeEach
     fun before(){
         MockitoAnnotations.openMocks(this)
-        appRepository = AppRepository(spMockBuilder.createContext())
-        presenter = SplashPresenter(checkUpdateEntity, languageEntity, appRepository)
+        appRepository = Mockito.spy(AppRepository(spMockBuilder.createContext()))
+        authRepository = Mockito.spy(AuthRepository(spMockBuilder.createContext()))
+        presenter = SplashPresenter(checkUpdateEntity, languageEntity, appRepository, authRepository)
         presenter.view = view
 
         RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
@@ -55,7 +62,7 @@ class SplashPresenterTest{
     }
 
     @Test
-    fun `check_update_and_language_first_time_success`(){
+    fun `check update success get language first time success`(){
         var checkUpdateBody = CheckUpdateBody(type = "app", version = BuildConfig.VERSION_NAME, os = "android")
         var updateResponse = BaseResponse<CheckUpdateResponse>(code = 100, message = "OK", data = CheckUpdateResponse())
         var languageResponse = BaseResponse<LanguageResponse>(code = 100, message = "OK", data = LanguageResponse())
@@ -73,17 +80,25 @@ class SplashPresenterTest{
 
         presenter.checkUpdateLanguage()
 
-        assertTrue(presenter.appRepository.paramsLanguage != null)
-        assertTrue(presenter.appRepository.languageResponse != null)
-        Mockito.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
-        Mockito.verify(languageEntity, Mockito.times(1)).getLanguage("en")
-        assertEquals(100, updateResponse.code)
-        assertEquals(100, languageResponse.code)
-        Mockito.verify(view, Mockito.times(1)).checkUpdateLanguageSuccess()
+        val inOrder = inOrder(view, checkUpdateEntity, languageEntity, appRepository, authRepository)
+
+        assertTrue(updateResponse.code == 100 && updateResponse.message == "OK" && updateResponse.data != null)
+        assertTrue(languageResponse.code == 100 && languageResponse.message == "OK" && languageResponse.data != null)
+
+        inOrder.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
+        inOrder.verify(languageEntity, Mockito.times(1)).getLanguage("en")
+        inOrder.verify(presenter.appRepository, Mockito.times(1)).paramsLanguage = "en"
+        inOrder.verify(presenter.appRepository, Mockito.times(1)).languageResponse = languageResponse.data
+        assertEquals("en", presenter.appRepository.paramsLanguage)
+        assertEquals(languageResponse.data, presenter.appRepository.languageResponse)
+        inOrder.verify(view, Mockito.times(1)).goToGuestMode(updateResponse.data!!)
+
+        Mockito.verify(view, Mockito.never()).goToLandingPage(updateResponse.data!!)
+        Mockito.verify(view, Mockito.never()).checkUpdateLanguageFailed(updateResponse.message)
     }
 
     @Test
-    fun `check_update_success_language_not_success`(){
+    fun `check update success get language first time not success`(){
         var checkUpdateBody = CheckUpdateBody(type = "app", version = BuildConfig.VERSION_NAME, os = "android")
         var updateResponse = BaseResponse<CheckUpdateResponse>(code = 100, message = "OK", data = CheckUpdateResponse())
         var languageResponse = BaseResponse<LanguageResponse>()
@@ -91,164 +106,232 @@ class SplashPresenterTest{
         assertTrue(presenter.appRepository.paramsLanguage == null)
         assertTrue(presenter.appRepository.languageResponse == null)
 
-        Mockito.`when`(checkUpdateEntity.checkUpdate(checkUpdateBody)).thenReturn(Observable.just(updateResponse))
-        Mockito.`when`(languageEntity.getLanguage("en")).thenReturn(Observable.just(languageResponse))
+        Mockito.lenient().`when`(checkUpdateEntity.checkUpdate(checkUpdateBody)).thenReturn(
+            Observable.just(updateResponse)
+        )
+
+        Mockito.lenient().`when`(languageEntity.getLanguage("en")).thenReturn(
+            Observable.just(languageResponse)
+        )
 
         presenter.checkUpdateLanguage()
 
-        assertTrue(presenter.appRepository.paramsLanguage == null)
-        assertTrue(presenter.appRepository.languageResponse == null)
-        Mockito.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
-        Mockito.verify(languageEntity, Mockito.times(1)).getLanguage("en")
-        assertTrue(updateResponse.code == 100)
-        assertTrue(languageResponse.code != 100)
-        assertTrue(updateResponse.message == "OK")
-        assertTrue(languageResponse.message != "OK")
-        Mockito.verify(view, Mockito.times(1)).forceRestart(languageResponse.message)
+        val inOrder = inOrder(view, checkUpdateEntity, languageEntity, appRepository, authRepository)
+
+        assertTrue(updateResponse.code == 100 && updateResponse.message == "OK" && updateResponse.data != null)
+        assertTrue(languageResponse.code != 100 || languageResponse.message != "OK" || languageResponse.data == null)
+
+        inOrder.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
+        inOrder.verify(languageEntity, Mockito.times(1)).getLanguage("en")
+        inOrder.verify(presenter.appRepository, Mockito.never()).paramsLanguage = "en"
+        inOrder.verify(presenter.appRepository, Mockito.never()).languageResponse = languageResponse.data
+
+        inOrder.verify(view, Mockito.times(1)).forceRestart(languageResponse.message)
+
+        Mockito.verify(view, Mockito.never()).goToLandingPage(updateResponse.data!!)
+        Mockito.verify(view, Mockito.never()).goToGuestMode(updateResponse.data!!)
     }
 
     @Test
-    fun `check_update_success_language_throw_error`(){
-        var checkUpdateBody = CheckUpdateBody(type = "app", version = BuildConfig.VERSION_NAME, os = "android")
-        var updateResponse = BaseResponse<CheckUpdateResponse>(code = 100, message = "OK", data = CheckUpdateResponse())
-        var throwable = Throwable(message = "MESSAGE THROWABLE")
-        var languageResponse = BaseResponse<LanguageResponse>(message = throwable.message)
+    fun `check update success get language first time throw error`(){
+        val checkUpdateBody = CheckUpdateBody(type = "app", version = BuildConfig.VERSION_NAME, os = "android")
+        val updateResponse = BaseResponse<CheckUpdateResponse>(code = 100, message = "OK", data = CheckUpdateResponse())
+        val throwableLanguage = Throwable("Throwable Message")
 
         assertTrue(presenter.appRepository.paramsLanguage == null)
         assertTrue(presenter.appRepository.languageResponse == null)
-
-        Mockito.lenient().`when`(checkUpdateEntity.checkUpdate(checkUpdateBody)).thenReturn(Observable.just(updateResponse))
-        Mockito.lenient().`when`(languageEntity.getLanguage("en")).thenReturn(Observable.just(languageResponse))
-
-        presenter.checkUpdateLanguage()
-
-        assertTrue(presenter.appRepository.paramsLanguage == null)
-        assertTrue(presenter.appRepository.languageResponse == null)
-        Mockito.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
-        Mockito.verify(languageEntity, Mockito.times(1)).getLanguage("en")
-        assertTrue(updateResponse.code == 100)
-        assertTrue(languageResponse.code != 100)
-        assertTrue(updateResponse.message == "OK")
-        assertTrue(languageResponse.message != "OK")
-        Mockito.verify(view, Mockito.times(1)).forceRestart(throwable.message)
-    }
-
-    @Test
-    fun `check_update_not_success_language_success`(){
-        var checkUpdateBody = CheckUpdateBody(type = "app", version = BuildConfig.VERSION_NAME, os = "android")
-        var updateResponse = BaseResponse<CheckUpdateResponse>()
-        var languageResponse = BaseResponse<LanguageResponse>(code = 100, message = "OK", data = LanguageResponse())
-
-        assertTrue(presenter.appRepository.paramsLanguage == null)
-        assertTrue(presenter.appRepository.languageResponse == null)
-
-        Mockito.`when`(checkUpdateEntity.checkUpdate(checkUpdateBody)).thenReturn(Observable.just(updateResponse))
-        Mockito.`when`(languageEntity.getLanguage("en")).thenReturn(Observable.just(languageResponse))
-
-        presenter.checkUpdateLanguage()
-
-        assertTrue(presenter.appRepository.paramsLanguage != null)
-        assertTrue(presenter.appRepository.languageResponse != null)
-        Mockito.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
-        Mockito.verify(languageEntity, Mockito.times(1)).getLanguage("en")
-        assertTrue(updateResponse.code != 100)
-        assertTrue(languageResponse.code == 100)
-        assertTrue(updateResponse.message != "OK")
-        assertTrue(languageResponse.message == "OK")
-        Mockito.verify(view, Mockito.times(1)).checkUpdateLanguageFailed(message = updateResponse.message)
-    }
-
-    @Test
-    fun `check_update_throw_error_language_success`(){
-        var checkUpdateBody = CheckUpdateBody(type = "app", version = BuildConfig.VERSION_NAME, os = "android")
-        var updateResponse = BaseResponse<CheckUpdateResponse>()
-        var languageResponse = BaseResponse<LanguageResponse>(code = 100, message = "OK", data = LanguageResponse())
-
-        assertTrue(presenter.appRepository.paramsLanguage == null)
-        assertTrue(presenter.appRepository.languageResponse == null)
-
-        Mockito.`when`(checkUpdateEntity.checkUpdate(checkUpdateBody)).thenReturn(Observable.just(updateResponse))
-        Mockito.`when`(languageEntity.getLanguage("en")).thenReturn(Observable.just(languageResponse))
-
-        presenter.checkUpdateLanguage()
-
-        assertTrue(presenter.appRepository.paramsLanguage != null)
-        assertTrue(presenter.appRepository.languageResponse != null)
-        Mockito.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
-        Mockito.verify(languageEntity, Mockito.times(1)).getLanguage("en")
-        assertTrue(updateResponse.code != 100)
-        assertTrue(languageResponse.code == 100)
-        assertTrue(updateResponse.message != "OK")
-        assertTrue(languageResponse.message == "OK")
-        Mockito.verify(view, Mockito.times(1)).checkUpdateLanguageFailed(message = updateResponse.message)
-    }
-
-//    @Test
-    fun `check_update_error_language_error`(){
-        var checkUpdateBody = CheckUpdateBody(type = "app", version = BuildConfig.VERSION_NAME, os = "android")
-        var updateResponse = BaseResponse<CheckUpdateResponse>()
-        var throwable = Throwable(message = "MESSAGE THROWABLE")
-        var languageResponse = BaseResponse<LanguageResponse>()
-
-        assertTrue(presenter.appRepository.paramsLanguage == null)
-        assertTrue(presenter.appRepository.languageResponse == null)
-
-        Mockito.`when`(checkUpdateEntity.checkUpdate(checkUpdateBody)).thenThrow(throwable)
-        Mockito.`when`(languageEntity.getLanguage("en")).thenReturn(Observable.just(languageResponse))
-
-        presenter.checkUpdateLanguage()
-
-        assertTrue(presenter.appRepository.paramsLanguage != null)
-        assertTrue(presenter.appRepository.languageResponse != null)
-        Mockito.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
-        Mockito.verify(languageEntity, Mockito.times(1)).getLanguage("en")
-        assertTrue(updateResponse.code != 100)
-        assertTrue(languageResponse.code == 100)
-        assertTrue(updateResponse.message != "OK")
-        assertTrue(languageResponse.message == "OK")
-        Mockito.verify(view, Mockito.times(1)).checkUpdateLanguageFailed(message = throwable.message)
-    }
-
-    @Test
-    fun `just_check_update_success`(){
-        var checkUpdateBody = CheckUpdateBody(type = "app", version = BuildConfig.VERSION_NAME, os = "android")
-        var updateResponse = BaseResponse<CheckUpdateResponse>(code = 100, message = "OK", data = CheckUpdateResponse())
-
-        presenter.appRepository.paramsLanguage = "en"
-        presenter.appRepository.languageResponse = LanguageResponse()
-
-        assertTrue(presenter.appRepository.paramsLanguage!=null)
-        assertTrue(presenter.appRepository.languageResponse!=null)
 
         Mockito.lenient().`when`(checkUpdateEntity.checkUpdate(checkUpdateBody)).thenReturn(
-            Observable.just(updateResponse))
+            Observable.just(updateResponse)
+        )
+
+        Mockito.lenient().`when`(languageEntity.getLanguage("en")).thenReturn(
+            Observable.error(throwableLanguage)
+        )
 
         presenter.checkUpdateLanguage()
 
+        val inOrder = inOrder(view, checkUpdateEntity, languageEntity, appRepository, authRepository)
 
-        assertTrue(presenter.appRepository.paramsLanguage != null)
-        assertTrue(presenter.appRepository.languageResponse != null)
-        Mockito.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
-        Mockito.verify(languageEntity, Mockito.times(0)).getLanguage(presenter.appRepository.paramsLanguage!!)
-        Mockito.verify(view, Mockito.times(1)).checkUpdateLanguageSuccess()
+        inOrder.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
+        inOrder.verify(languageEntity, Mockito.times(1)).getLanguage("en")
+        inOrder.verify(view, Mockito.times(1)).forceRestart(throwableLanguage.message)
     }
 
     @Test
-    fun `just_check_update_failed`(){
-        var checkUpdateBody = CheckUpdateBody(type = "app", version = BuildConfig.VERSION_NAME, os = "android")
-        var updateResponse = BaseResponse<CheckUpdateResponse>()
+    fun `check update failed get language first time success`(){
+        val checkUpdateBody = CheckUpdateBody(type = "app", version = BuildConfig.VERSION_NAME, os = "android")
+        val updateResponse = BaseResponse<CheckUpdateResponse>()
+        val languageResponse = BaseResponse<LanguageResponse>(code = 100, message = "OK", data = LanguageResponse())
 
-        presenter.appRepository.paramsLanguage = "en"
-        presenter.appRepository.languageResponse = LanguageResponse()
+        assertTrue(presenter.appRepository.paramsLanguage == null)
+        assertTrue(presenter.appRepository.languageResponse == null)
 
         Mockito.lenient().`when`(checkUpdateEntity.checkUpdate(checkUpdateBody)).thenReturn(
-            Observable.just(updateResponse))
+            Observable.just(updateResponse)
+        )
+
+        Mockito.lenient().`when`(languageEntity.getLanguage("en")).thenReturn(
+            Observable.just(languageResponse)
+        )
 
         presenter.checkUpdateLanguage()
 
+        val inOrder = inOrder(view, checkUpdateEntity, languageEntity, appRepository, authRepository)
+
+        assertTrue(updateResponse.code != 100 || updateResponse.message != "OK" || updateResponse.data == null)
+        assertTrue(languageResponse.code == 100 && languageResponse.message == "OK" && languageResponse.data != null)
+
+        inOrder.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
+        inOrder.verify(languageEntity, Mockito.times(1)).getLanguage("en")
+        inOrder.verify(presenter.appRepository, Mockito.times(1)).paramsLanguage = "en"
+        inOrder.verify(presenter.appRepository, Mockito.times(1)).languageResponse = languageResponse.data
+        assertEquals("en", presenter.appRepository.paramsLanguage)
+        assertEquals(languageResponse.data, presenter.appRepository.languageResponse)
+        inOrder.verify(view, Mockito.times(1)).goToGuestMode(CheckUpdateResponse())
+
+        Mockito.verify(view, Mockito.never()).goToLandingPage(CheckUpdateResponse())
+        Mockito.verify(view, Mockito.never()).checkUpdateLanguageFailed(updateResponse.message)
+    }
+
+    @Test
+    fun `check update throw error get language first time success`(){
+        val checkUpdateBody = CheckUpdateBody(type = "app", version = BuildConfig.VERSION_NAME, os = "android")
+        val throwableResponse = Throwable("THROWABLE MESSAGE")
+        val languageResponse = BaseResponse<LanguageResponse>(code = 100, message = "OK", data = LanguageResponse())
+
+        assertTrue(presenter.appRepository.paramsLanguage == null)
+        assertTrue(presenter.appRepository.languageResponse == null)
+
+        Mockito.lenient().`when`(checkUpdateEntity.checkUpdate(checkUpdateBody)).thenReturn(
+            Observable.error(throwableResponse)
+        )
+
+        Mockito.lenient().`when`(languageEntity.getLanguage("en")).thenReturn(
+            Observable.just(languageResponse)
+        )
+
+        presenter.checkUpdateLanguage()
+
+        val inOrder = inOrder(view, checkUpdateEntity, languageEntity, appRepository, authRepository)
+
+        assertTrue(languageResponse.code == 100 && languageResponse.message == "OK" && languageResponse.data != null)
+
+        inOrder.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
+        inOrder.verify(languageEntity, Mockito.times(1)).getLanguage("en")
+        inOrder.verify(presenter.appRepository, Mockito.times(1)).paramsLanguage = "en"
+        inOrder.verify(presenter.appRepository, Mockito.times(1)).languageResponse = languageResponse.data
+        assertEquals("en", presenter.appRepository.paramsLanguage)
+        assertEquals(languageResponse.data, presenter.appRepository.languageResponse)
+        inOrder.verify(view, Mockito.times(1)).goToGuestMode(CheckUpdateResponse())
+
+        Mockito.verify(view, Mockito.never()).goToLandingPage(CheckUpdateResponse())
+        Mockito.verify(view, Mockito.never()).checkUpdateLanguageFailed(throwableResponse.message)
+    }
+
+    @Test
+    fun `check update success not logged in`(){
+        var checkUpdateBody = CheckUpdateBody(type = "app", version = BuildConfig.VERSION_NAME, os = "android")
+        var updateResponse = BaseResponse<CheckUpdateResponse>(code = 100, message = "OK", CheckUpdateResponse())
+
+        presenter.appRepository.paramsLanguage = ""
+        presenter.appRepository.languageResponse = LanguageResponse()
+
+        Mockito.`when`(checkUpdateEntity.checkUpdate(checkUpdateBody)).thenReturn(Observable.just(updateResponse))
+
+        presenter.checkUpdateLanguage()
+
+        val inOrder = inOrder(view, checkUpdateEntity, languageEntity, appRepository, authRepository)
+
         assertTrue(presenter.appRepository.paramsLanguage != null)
         assertTrue(presenter.appRepository.languageResponse != null)
-        Mockito.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
-        Mockito.verify(view, Mockito.times(1)).checkUpdateLanguageFailed(message = updateResponse.message)
+        inOrder.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
+        assertTrue(updateResponse.code == 100)
+        assertTrue(updateResponse.message == "OK")
+        assertTrue(updateResponse.data != null)
+        assertTrue(presenter.appRepository.paramsLanguage != null)
+        assertTrue(presenter.appRepository.languageResponse != null)
+        Mockito.verify(view, Mockito.times(1)).goToGuestMode(updateResponse.data!!)
+    }
+
+    @Test
+    fun `check update failed not logged in`(){
+        var checkUpdateBody = CheckUpdateBody(type = "app", version = BuildConfig.VERSION_NAME, os = "android")
+        var updateResponse = BaseResponse<CheckUpdateResponse>()
+
+        presenter.appRepository.paramsLanguage = ""
+        presenter.appRepository.languageResponse = LanguageResponse()
+
+        Mockito.`when`(checkUpdateEntity.checkUpdate(checkUpdateBody)).thenReturn(Observable.just(updateResponse))
+
+        presenter.checkUpdateLanguage()
+
+        val inOrder = inOrder(view, checkUpdateEntity, languageEntity, appRepository, authRepository)
+
+        assertTrue(presenter.appRepository.paramsLanguage != null)
+        assertTrue(presenter.appRepository.languageResponse != null)
+        inOrder.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
+        assertTrue(updateResponse.code != 100)
+        assertTrue(updateResponse.message != "OK")
+        assertTrue(presenter.appRepository.paramsLanguage != null)
+        assertTrue(presenter.appRepository.languageResponse != null)
+        Mockito.verify(view, Mockito.times(1)).goToGuestMode(CheckUpdateResponse())
+    }
+
+    @Test
+    fun `check update success logged in`(){
+        var checkUpdateBody = CheckUpdateBody(type = "app", version = BuildConfig.VERSION_NAME, os = "android")
+        var updateResponse = BaseResponse<CheckUpdateResponse>(code = 100, message = "OK", CheckUpdateResponse())
+
+        presenter.appRepository.paramsLanguage = ""
+        presenter.appRepository.languageResponse = LanguageResponse()
+        presenter.authRepository.bearerToken = ""
+        presenter.authRepository.password = ""
+        presenter.authRepository.loginResponse = LoginResponse()
+
+        Mockito.`when`(checkUpdateEntity.checkUpdate(checkUpdateBody)).thenReturn(Observable.just(updateResponse))
+
+        presenter.checkUpdateLanguage()
+
+        val inOrder = inOrder(view, checkUpdateEntity, languageEntity, appRepository, authRepository)
+
+        assertTrue(presenter.appRepository.paramsLanguage != null)
+        assertTrue(presenter.appRepository.languageResponse != null)
+        inOrder.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
+        assertTrue(updateResponse.code == 100)
+        assertTrue(updateResponse.message == "OK")
+        assertTrue(updateResponse.data != null)
+        assertTrue(presenter.appRepository.paramsLanguage != null)
+        assertTrue(presenter.appRepository.languageResponse != null)
+        assertTrue(presenter.authRepository.isLoggedIn == true)
+        Mockito.verify(view, Mockito.times(1)).goToLandingPage(updateResponse.data!!)
+    }
+
+    @Test
+    fun `check update failed logged in`(){
+        var checkUpdateBody = CheckUpdateBody(type = "app", version = BuildConfig.VERSION_NAME, os = "android")
+        var updateResponse = BaseResponse<CheckUpdateResponse>()
+
+        presenter.appRepository.paramsLanguage = ""
+        presenter.appRepository.languageResponse = LanguageResponse()
+        presenter.authRepository.bearerToken = ""
+        presenter.authRepository.password = ""
+        presenter.authRepository.loginResponse = LoginResponse()
+
+        Mockito.`when`(checkUpdateEntity.checkUpdate(checkUpdateBody)).thenReturn(Observable.just(updateResponse))
+
+        presenter.checkUpdateLanguage()
+
+        val inOrder = inOrder(view, checkUpdateEntity, languageEntity, appRepository, authRepository)
+
+        assertTrue(presenter.appRepository.paramsLanguage != null)
+        assertTrue(presenter.appRepository.languageResponse != null)
+        inOrder.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
+        assertTrue(updateResponse.code != 100)
+        assertTrue(updateResponse.message != "OK")
+        assertTrue(presenter.appRepository.paramsLanguage != null)
+        assertTrue(presenter.appRepository.languageResponse != null)
+        assertTrue(presenter.authRepository.isLoggedIn == true)
+        inOrder.verify(view, Mockito.times(1)).goToLandingPage(CheckUpdateResponse())
     }
 }

@@ -75,4 +75,9 @@ class AuthRepository @Inject constructor(context: Context):BasePreference(contex
             field = value
         }
     }
+
+    var isLoggedIn: Boolean ?= null
+    get() {
+        return bearerToken != null && loginResponse != null && password != null
+    }
 }

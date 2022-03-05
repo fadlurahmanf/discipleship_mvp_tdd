@@ -1,5 +1,6 @@
 package com.fadlurahmanf.starter_app_mvp.ui.home
 
+import android.view.View
 import com.fadlurahmanf.starter_app_mvp.BaseApp
 import com.fadlurahmanf.starter_app_mvp.R
 import com.fadlurahmanf.starter_app_mvp.base.BaseMvpActivity
@@ -8,6 +9,7 @@ import com.fadlurahmanf.starter_app_mvp.data.response.auth.MyGroupResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.auth.MyTrainingResponse
 import com.fadlurahmanf.starter_app_mvp.databinding.ActivityLandingPageBinding
 import com.fadlurahmanf.starter_app_mvp.di.component.HomeComponent
+import com.fadlurahmanf.starter_app_mvp.ui.home.adapter.MyGroupAdapter
 import com.fadlurahmanf.starter_app_mvp.ui.home.presenter.LandingPageContract
 import com.fadlurahmanf.starter_app_mvp.ui.home.presenter.LandingPagePresenter
 import javax.inject.Inject
@@ -30,23 +32,41 @@ class LandingPageActivity : BaseMvpActivity<LandingPagePresenter,ActivityLanding
     override fun setup() {
         supportActionBar?.hide()
         setStatusBarStyle(R.color.red, false)
+        initAdapter()
         presenter.getMyGroupAndMySubscription()
         presenter.getMyTraining()
     }
 
+    private lateinit var adapter:MyGroupAdapter
+    private var myGroups:ArrayList<MyGroupResponse> = arrayListOf()
+    private fun initAdapter() {
+        adapter = MyGroupAdapter(myGroups)
+        binding?.rvStudyGroup?.adapter = adapter
+        refreshRecycleView()
+    }
+
+    private fun refreshRecycleView(){
+        adapter.notifyDataSetChanged()
+    }
+
     override fun myGroupAndSubscriptionLoading() {
-        
+        binding?.studyGroupShimmer?.visibility = View.VISIBLE
+        binding?.rvStudyGroup?.visibility = View.GONE
     }
 
     override fun myGroupAndMySubscriptionLoaded(
         myGroups: List<MyGroupResponse>,
         mySubscriptions: List<LoginResponse.User.Subscription>
     ) {
-
+        binding?.studyGroupShimmer?.visibility = View.GONE
+        binding?.rvStudyGroup?.visibility = View.VISIBLE
+        this.myGroups.clear()
+        this.myGroups.addAll(myGroups)
+        refreshRecycleView()
     }
 
     override fun myGroupAndMySubscriptionError(message: String?) {
-        
+        showSnackBar(message)
     }
 
     override fun getTrainingLoading() {

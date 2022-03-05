@@ -7,6 +7,7 @@ import com.fadlurahmanf.starter_app_mvp.data.entity.core.CheckUpdateEntity
 import com.fadlurahmanf.starter_app_mvp.data.entity.core.LanguageEntity
 import com.fadlurahmanf.starter_app_mvp.data.model.core.CheckUpdateBody
 import com.fadlurahmanf.starter_app_mvp.data.repository.core.AppRepository
+import com.fadlurahmanf.starter_app_mvp.data.repository.core.AuthRepository
 import com.fadlurahmanf.starter_app_mvp.data.response.core.BaseResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.core.CheckUpdateResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.core.LanguageResponse
@@ -21,7 +22,8 @@ import javax.inject.Inject
 class SplashPresenter @Inject constructor(
     var checkUpdateEntity: CheckUpdateEntity,
     var languageEntity: LanguageEntity,
-    var appRepository: AppRepository
+    var appRepository: AppRepository,
+    var authRepository: AuthRepository
 ):BasePresenter<SplashContract.View>(), SplashContract.Presenter {
 
     data class UpdateLanguageResponse(
@@ -39,14 +41,26 @@ class SplashPresenter @Inject constructor(
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                         {
-                            if (it.code == 100){
-                                view?.checkUpdateLanguageSuccess()
+                            if (it.code == 100 && it.data != null){
+                                if (authRepository.isLoggedIn == true){
+                                    view?.goToLandingPage(it.data!!)
+                                }else{
+                                    view?.goToGuestMode(it.data!!)
+                                }
                             }else{
-                                view?.checkUpdateLanguageFailed(message = it.message)
+                                if (authRepository.isLoggedIn == true){
+                                    view?.goToLandingPage(CheckUpdateResponse())
+                                }else{
+                                    view?.goToGuestMode(CheckUpdateResponse())
+                                }
                             }
                         },
                         {
-                            view?.checkUpdateLanguageFailed(message = it.message)
+                            if (authRepository.isLoggedIn == true){
+                                view?.goToLandingPage(CheckUpdateResponse())
+                            }else{
+                                view?.goToGuestMode(CheckUpdateResponse())
+                            }
                         },
                         {}
                     )
@@ -57,28 +71,32 @@ class SplashPresenter @Inject constructor(
                     BaseResponse<CheckUpdateResponse>(message = it.message)
                 },
                 languageEntity.getLanguage("en").onErrorReturn {
-                    BaseResponse<LanguageResponse>()
+                    BaseResponse<LanguageResponse>(message = it.message)
                 },
                 BiFunction { t1, t2 ->  UpdateLanguageResponse(t1, t2)}
             ).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
-                        if (it.updateResponse?.code == 100 && it.languageResponse?.code == 100){
+                        if (it.updateResponse?.code == 100 && it.languageResponse?.code == 100 && it.languageResponse!!.data != null && it.updateResponse!!.data != null){
                             appRepository.paramsLanguage = "en"
                             appRepository.languageResponse = it.languageResponse!!.data
-                            view?.checkUpdateLanguageSuccess()
+                            if (authRepository.isLoggedIn == true){
+                                view?.goToLandingPage(it.updateResponse!!.data!!)
+                            }else{
+                                view?.goToGuestMode(it.updateResponse!!.data!!)
+                            }
                         }else if (it.updateResponse?.code == 100 && it.languageResponse?.code!=100){
                             view?.forceRestart(it.languageResponse?.message)
                         }else if (it.updateResponse?.code != 100 && it.languageResponse?.code == 100){
                             appRepository.paramsLanguage = "en"
                             appRepository.languageResponse = it.languageResponse!!.data
-                            view?.checkUpdateLanguageFailed(message = it.updateResponse?.message)
+                            view?.goToGuestMode(CheckUpdateResponse())
                         }else{
-                            view?.checkUpdateLanguageFailed(message = it.languageResponse?.message?:it.updateResponse?.message?:"")
+                            view?.goToGuestMode(CheckUpdateResponse())
                         }
                     },
                     {
-                        view?.checkUpdateLanguageFailed(message = it.message)
+                        view?.forceRestart(it.message)
                     },
                     {}
                 )

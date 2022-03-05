@@ -9,9 +9,11 @@ import com.fadlurahmanf.starter_app_mvp.data.repository.core.AppRepository
 import com.fadlurahmanf.starter_app_mvp.data.repository.core.AuthRepository
 import com.fadlurahmanf.starter_app_mvp.data.repository.example.ExampleRepository
 import com.fadlurahmanf.starter_app_mvp.data.response.auth.MyGroupResponse
+import com.fadlurahmanf.starter_app_mvp.data.response.core.CheckUpdateResponse
 import com.fadlurahmanf.starter_app_mvp.databinding.ActivitySplashBinding
 import com.fadlurahmanf.starter_app_mvp.di.component.CoreComponent
 import com.fadlurahmanf.starter_app_mvp.ui.guest_mode.GuestModeActivity
+import com.fadlurahmanf.starter_app_mvp.ui.home.LandingPageActivity
 import javax.inject.Inject
 
 class SplashActivity : BaseMvpActivity<SplashPresenter, ActivitySplashBinding>(ActivitySplashBinding::inflate),
@@ -40,8 +42,14 @@ class SplashActivity : BaseMvpActivity<SplashPresenter, ActivitySplashBinding>(A
         presenter.view = this
     }
 
-    override fun checkUpdateLanguageSuccess() {
+    override fun goToGuestMode(data: CheckUpdateResponse) {
         val intent = Intent(this, GuestModeActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+    }
+
+    override fun goToLandingPage(data: CheckUpdateResponse) {
+        val intent = Intent(this, LandingPageActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
     }
