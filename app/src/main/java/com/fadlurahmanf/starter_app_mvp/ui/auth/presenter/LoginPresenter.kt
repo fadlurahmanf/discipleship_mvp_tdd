@@ -22,6 +22,7 @@ class LoginPresenter @Inject constructor(
                         if (it.code == 100 && it.data != null){
                             authRepository.password = password
                             authRepository.bearerToken = it.data?.accessToken
+                            authRepository.loginResponse = it.data
                             view?.loginSuccess(it.data!!)
                         }else{
                             view?.loginFailed(it.message)

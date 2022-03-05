@@ -74,7 +74,8 @@ class LoginPresenterTest{
         inOrder.verify(authEntity, Mockito.times(1)).login(loginBody)
         inOrder.verify(view, Mockito.times(1)).dismissLoadingDialog()
         assertTrue(presenter.authRepository.password != null)
-        assertTrue(!presenter.authRepository.bearerToken.isNullOrEmpty() && presenter.authRepository.bearerToken?.length?:0 > 8)
+        assertTrue(presenter.authRepository.bearerToken != null)
+        assertTrue(presenter.authRepository.loginResponse != null)
         inOrder.verify(view, Mockito.times(1)).loginSuccess(response.data!!)
         inOrder.verifyNoMoreInteractions()
     }
