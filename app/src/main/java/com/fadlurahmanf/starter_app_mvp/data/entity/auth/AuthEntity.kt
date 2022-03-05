@@ -19,5 +19,9 @@ class AuthEntity @Inject constructor(
 
     fun regis(body: RegisterBody) = networkService(30).regis(body = body)
 
-    fun getSubscription(@Header("Authorization") authorization:String) = networkService(30).getMySubscriptions(authorization)
+    fun getSubscription(authorization:String) = networkService(30).getMySubscriptions(authorization)
+
+    fun getMyGroups(authorization: String) = networkService(30).getMyGroup(authorization)
+
+    fun getMyTrainingStudyTopic(authorization: String) = networkService(30).getMyTrainingStudyTopic(authorization)
 }

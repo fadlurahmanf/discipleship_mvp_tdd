@@ -1,5 +1,6 @@
 package com.fadlurahmanf.starter_app_mvp.ui.auth
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.text.method.PasswordTransformationMethod
 import android.text.method.SingleLineTransformationMethod
@@ -15,6 +16,7 @@ import com.fadlurahmanf.starter_app_mvp.databinding.ActivityLoginBinding
 import com.fadlurahmanf.starter_app_mvp.di.component.AuthComponent
 import com.fadlurahmanf.starter_app_mvp.ui.auth.presenter.LoginContract
 import com.fadlurahmanf.starter_app_mvp.ui.auth.presenter.LoginPresenter
+import com.fadlurahmanf.starter_app_mvp.ui.home.LandingPageActivity
 import javax.inject.Inject
 
 class LoginActivity : BaseMvpActivity<LoginPresenter, ActivityLoginBinding>(ActivityLoginBinding::inflate),
@@ -109,11 +111,13 @@ class LoginActivity : BaseMvpActivity<LoginPresenter, ActivityLoginBinding>(Acti
     }
 
     override fun loginSuccess(response: LoginResponse) {
-
+        val intent = Intent(this, LandingPageActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 
     override fun loginFailed(message: String?) {
-
+        showOkDialog(title = "Oops..", content = message)
     }
 
 }

@@ -44,8 +44,8 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    testOptions{
-        animationsDisabled true
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 }
 
@@ -72,6 +72,8 @@ dependencies {
 
     //testing espresso
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    testImplementation 'org.json:json:20180813'
 
     //dagger dependency injection
     implementation 'com.google.dagger:dagger:2.41'

@@ -2,20 +2,16 @@ package com.fadlurahmanf.starter_app_mvp.ui.guest_mode
 
 import android.content.Intent
 import android.view.View
-import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.Toolbar
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.fadlurahmanf.starter_app_mvp.BaseApp
 import com.fadlurahmanf.starter_app_mvp.R
 import com.fadlurahmanf.starter_app_mvp.base.BaseMvpActivity
+import com.fadlurahmanf.starter_app_mvp.data.repository.core.AuthRepository
 import com.fadlurahmanf.starter_app_mvp.data.response.core.TestimonialResponse
 import com.fadlurahmanf.starter_app_mvp.databinding.ActivityGuestModeBinding
 import com.fadlurahmanf.starter_app_mvp.di.component.CoreComponent
 import com.fadlurahmanf.starter_app_mvp.ui.auth.LoginActivity
 import com.fadlurahmanf.starter_app_mvp.ui.guest_mode.adapter.TestimonialAdapter
-import com.fadlurahmanf.starter_app_mvp.ui.guest_mode.adapter.TestimonialShimmerAdapter
 import com.fadlurahmanf.starter_app_mvp.ui.guest_mode.presenter.GuestModeContract
 import com.fadlurahmanf.starter_app_mvp.ui.guest_mode.presenter.GuestModePresenter
 import javax.inject.Inject
@@ -56,10 +52,8 @@ class GuestModeActivity : BaseMvpActivity<GuestModePresenter, ActivityGuestModeB
 
     override fun testimonialLoading() {
         binding?.rvTestimonial?.visibility = View.GONE
-        binding?.rvTestimonialShimmer?.visibility = View.VISIBLE
+        binding?.hsvShimmer?.visibility = View.VISIBLE
         binding?.tvTestimonialError?.visibility = View.GONE
-        var adapter = TestimonialShimmerAdapter(arrayListOf<TestimonialResponse>())
-        binding?.rvTestimonialShimmer?.adapter = adapter
     }
 
     private lateinit var adapter:TestimonialAdapter
@@ -67,7 +61,7 @@ class GuestModeActivity : BaseMvpActivity<GuestModePresenter, ActivityGuestModeB
 
     override fun testimonialLoaded(list:List<TestimonialResponse>) {
         binding?.rvTestimonial?.visibility = View.VISIBLE
-        binding?.rvTestimonialShimmer?.visibility = View.GONE
+        binding?.hsvShimmer?.visibility = View.GONE
         binding?.tvTestimonialError?.visibility = View.GONE
         listTestimonial.addAll(list)
         adapter = TestimonialAdapter(listTestimonial)
@@ -76,7 +70,7 @@ class GuestModeActivity : BaseMvpActivity<GuestModePresenter, ActivityGuestModeB
 
     override fun testimonialFailed(message: String?) {
         binding?.rvTestimonial?.visibility = View.GONE
-        binding?.rvTestimonialShimmer?.visibility = View.GONE
+        binding?.hsvShimmer?.visibility = View.GONE
         binding?.tvTestimonialError?.visibility = View.VISIBLE
         binding?.tvTestimonialError?.text = message?:""
     }

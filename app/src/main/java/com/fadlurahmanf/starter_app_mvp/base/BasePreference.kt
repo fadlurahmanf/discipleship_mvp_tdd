@@ -114,11 +114,13 @@ abstract class BasePreference(context: Context) {
         }
     }
 
-    protected fun <T> saveListData(key: String, value: ArrayList<T>){
-        sharedPreferences?.edit()?.putString(key, Gson().toJson(value))?.apply()
+    protected fun <T> saveListData(key: String, value: List<T>){
+        try {
+            sharedPreferences?.edit()?.putString(key, Gson().toJson(value))?.apply()
+        }catch (e:Exception){ }
     }
 
-    protected fun <T> getListData(key: String, classOfT:Class<T>): ArrayList<T>?{
+    protected fun <T> getListData(key: String, classOfT:Class<T>): List<T>?{
         try {
             val rawString:String? = getString(key)
             val list:ArrayList<T> = arrayListOf<T>()
@@ -129,11 +131,13 @@ abstract class BasePreference(context: Context) {
                     val row = jsonArray.getJSONObject(i)
                     list.add(Gson().fromJson(row.toString(), classOfT))
                 }
+                println("MASUK ${list.size} dan ${list != null}")
                 return list
             }else{
                 return null
             }
         }catch (e:Exception){
+            println("MASUK NULL 2 ${e.message}")
             return null
         }
     }

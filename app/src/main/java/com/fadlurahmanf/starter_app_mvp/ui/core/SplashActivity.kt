@@ -6,7 +6,9 @@ import com.fadlurahmanf.starter_app_mvp.R
 import com.fadlurahmanf.starter_app_mvp.base.BaseMvpActivity
 import com.fadlurahmanf.starter_app_mvp.core.extension.isValidEmail
 import com.fadlurahmanf.starter_app_mvp.data.repository.core.AppRepository
+import com.fadlurahmanf.starter_app_mvp.data.repository.core.AuthRepository
 import com.fadlurahmanf.starter_app_mvp.data.repository.example.ExampleRepository
+import com.fadlurahmanf.starter_app_mvp.data.response.auth.MyGroupResponse
 import com.fadlurahmanf.starter_app_mvp.databinding.ActivitySplashBinding
 import com.fadlurahmanf.starter_app_mvp.di.component.CoreComponent
 import com.fadlurahmanf.starter_app_mvp.ui.guest_mode.GuestModeActivity
@@ -20,6 +22,9 @@ class SplashActivity : BaseMvpActivity<SplashPresenter, ActivitySplashBinding>(A
         coreComponent = (applicationContext as BaseApp).appComponent.coreComponent().create()
         coreComponent.inject(this)
     }
+
+    @Inject
+    lateinit var authRepository: AuthRepository
 
     override fun setup() {
         setTransparentStatusBar()

@@ -13,6 +13,7 @@ interface ApplicationComponent {
     fun exampleComponent(): ExampleComponent.Factory
     fun coreComponent(): CoreComponent.Factory
     fun authComponent(): AuthComponent.Factory
+    fun homeComponent(): HomeComponent.Factory
 
     @Component.Factory
     interface Factory{

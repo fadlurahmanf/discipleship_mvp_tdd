@@ -58,7 +58,9 @@ class LoginPresenterTest{
         assumeTrue(loginBody.email.isValidEmail())
         assumeTrue(!loginBody.password.isNullOrEmpty())
 
-        var response = BaseResponse<LoginResponse>(code = 100, message = "OK", data = LoginResponse())
+        var response = BaseResponse<LoginResponse>(code = 100, message = "OK", data = LoginResponse(
+            accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpha3VuaW4xMTQwQGdtYWlsLmNvbSIsInN1YiI6Niwicm9sZSI6InBhcnRpY2lwYW50IiwiaWF0IjoxNjQyNDk2MjcxfQ.h7mGkLtlKM_E5qKX0iIJKasgcVFC3uckKJ4Nz1E0Lgg"
+        ))
 
         Mockito.`when`(authEntity.login(loginBody)).thenReturn(
             Observable.just(response)
@@ -72,6 +74,7 @@ class LoginPresenterTest{
         inOrder.verify(authEntity, Mockito.times(1)).login(loginBody)
         inOrder.verify(view, Mockito.times(1)).dismissLoadingDialog()
         assertTrue(presenter.authRepository.password != null)
+        assertTrue(!presenter.authRepository.bearerToken.isNullOrEmpty() && presenter.authRepository.bearerToken?.length?:0 > 8)
         inOrder.verify(view, Mockito.times(1)).loginSuccess(response.data!!)
         inOrder.verifyNoMoreInteractions()
     }
