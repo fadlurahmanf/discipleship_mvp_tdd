@@ -131,13 +131,11 @@ abstract class BasePreference(context: Context) {
                     val row = jsonArray.getJSONObject(i)
                     list.add(Gson().fromJson(row.toString(), classOfT))
                 }
-                println("MASUK ${list.size} dan ${list != null}")
                 return list
             }else{
                 return null
             }
         }catch (e:Exception){
-            println("MASUK NULL 2 ${e.message}")
             return null
         }
     }

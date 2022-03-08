@@ -1,4 +1,4 @@
-package com.fadlurahmanf.starter_app_mvp.ui.core
+package com.fadlurahmanf.starter_app_mvp.ui.core.presenter
 
 import com.fadlurahmanf.starter_app_mvp.base.BaseView
 import com.fadlurahmanf.starter_app_mvp.data.response.core.CheckUpdateResponse

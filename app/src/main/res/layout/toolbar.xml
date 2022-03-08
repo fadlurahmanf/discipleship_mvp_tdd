@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:paddingVertical="@dimen/dimen_10dp"
         android:paddingHorizontal="@dimen/dimen_10dp"
         android:background="@color/red">
@@ -33,12 +33,13 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toRightOf="@id/ic_left_menu"
                 android:text="Title"
+                android:id="@+id/tv_main_title"
                 style="@style/Font.Bold.14"
                 android:textColor="@color/white"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_group_chosen"
+                android:id="@+id/tv_second_title"
                 android:text="Smith, Saturday, 7:00AM"
                 style="@style/Font.Regular.14"
                 android:textColor="@color/white"/>
@@ -54,4 +55,4 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

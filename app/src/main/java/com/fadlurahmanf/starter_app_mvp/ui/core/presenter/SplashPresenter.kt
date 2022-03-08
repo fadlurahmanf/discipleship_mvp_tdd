@@ -1,8 +1,7 @@
-package com.fadlurahmanf.starter_app_mvp.ui.core
+package com.fadlurahmanf.starter_app_mvp.ui.core.presenter
 
 import com.fadlurahmanf.starter_app_mvp.BuildConfig
 import com.fadlurahmanf.starter_app_mvp.base.BasePresenter
-import com.fadlurahmanf.starter_app_mvp.core.extension.uiSubscribe
 import com.fadlurahmanf.starter_app_mvp.data.entity.core.CheckUpdateEntity
 import com.fadlurahmanf.starter_app_mvp.data.entity.core.LanguageEntity
 import com.fadlurahmanf.starter_app_mvp.data.model.core.CheckUpdateBody
@@ -13,8 +12,6 @@ import com.fadlurahmanf.starter_app_mvp.data.response.core.CheckUpdateResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.core.LanguageResponse
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.ObservableSource
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.functions.BiFunction
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
@@ -73,7 +70,7 @@ class SplashPresenter @Inject constructor(
                 languageEntity.getLanguage("en").onErrorReturn {
                     BaseResponse<LanguageResponse>(message = it.message)
                 },
-                BiFunction { t1, t2 ->  UpdateLanguageResponse(t1, t2)}
+                BiFunction { t1, t2 ->  UpdateLanguageResponse(t1, t2) }
             ).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {

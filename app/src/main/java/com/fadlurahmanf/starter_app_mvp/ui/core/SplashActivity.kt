@@ -4,16 +4,15 @@ import android.content.Intent
 import com.fadlurahmanf.starter_app_mvp.BaseApp
 import com.fadlurahmanf.starter_app_mvp.R
 import com.fadlurahmanf.starter_app_mvp.base.BaseMvpActivity
-import com.fadlurahmanf.starter_app_mvp.core.extension.isValidEmail
-import com.fadlurahmanf.starter_app_mvp.data.repository.core.AppRepository
 import com.fadlurahmanf.starter_app_mvp.data.repository.core.AuthRepository
-import com.fadlurahmanf.starter_app_mvp.data.repository.example.ExampleRepository
-import com.fadlurahmanf.starter_app_mvp.data.response.auth.MyGroupResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.core.CheckUpdateResponse
 import com.fadlurahmanf.starter_app_mvp.databinding.ActivitySplashBinding
 import com.fadlurahmanf.starter_app_mvp.di.component.CoreComponent
+import com.fadlurahmanf.starter_app_mvp.ui.core.presenter.SplashContract
+import com.fadlurahmanf.starter_app_mvp.ui.core.presenter.SplashPresenter
 import com.fadlurahmanf.starter_app_mvp.ui.guest_mode.GuestModeActivity
 import com.fadlurahmanf.starter_app_mvp.ui.home.LandingPageActivity
+import com.fadlurahmanf.starter_app_mvp.ui.home.WaitlistActivity
 import javax.inject.Inject
 
 class SplashActivity : BaseMvpActivity<SplashPresenter, ActivitySplashBinding>(ActivitySplashBinding::inflate),
@@ -50,6 +49,7 @@ class SplashActivity : BaseMvpActivity<SplashPresenter, ActivitySplashBinding>(A
 
     override fun goToLandingPage(data: CheckUpdateResponse) {
         val intent = Intent(this, LandingPageActivity::class.java)
+//        val intent = Intent(this, WaitlistActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
     }

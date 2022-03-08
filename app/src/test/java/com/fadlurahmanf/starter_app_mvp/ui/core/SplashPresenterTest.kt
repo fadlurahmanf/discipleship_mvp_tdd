@@ -10,6 +10,8 @@ import com.fadlurahmanf.starter_app_mvp.data.response.auth.LoginResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.core.BaseResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.core.CheckUpdateResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.core.LanguageResponse
+import com.fadlurahmanf.starter_app_mvp.ui.core.presenter.SplashContract
+import com.fadlurahmanf.starter_app_mvp.ui.core.presenter.SplashPresenter
 import com.github.ivanshafran.sharedpreferencesmock.SPMockBuilder
 import io.reactivex.rxjava3.android.plugins.RxAndroidPlugins
 import io.reactivex.rxjava3.core.Observable
@@ -45,7 +47,7 @@ class SplashPresenterTest{
     lateinit var appRepository: AppRepository
 
     @Mock
-    lateinit var view:SplashContract.View
+    lateinit var view: SplashContract.View
 
     private lateinit var presenter: SplashPresenter
 
