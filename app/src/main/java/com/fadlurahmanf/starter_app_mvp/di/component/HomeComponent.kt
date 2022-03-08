@@ -1,7 +1,10 @@
 package com.fadlurahmanf.starter_app_mvp.di.component
 
 import com.fadlurahmanf.starter_app_mvp.ui.home.LandingPageActivity
+import com.fadlurahmanf.starter_app_mvp.ui.home.MainActivity
 import com.fadlurahmanf.starter_app_mvp.ui.home.WaitlistActivity
+import com.fadlurahmanf.starter_app_mvp.ui.home.tab.GroupBoardFragment
+import com.fadlurahmanf.starter_app_mvp.ui.home.tab.PrayerRequestFragment
 import dagger.Subcomponent
 import javax.inject.Singleton
 
@@ -16,4 +19,7 @@ interface HomeComponent {
 
     fun inject(activity:LandingPageActivity)
     fun inject(activity:WaitlistActivity)
+    fun inject(activity:MainActivity)
+    fun inject(fragment:GroupBoardFragment)
+    fun inject(fragment:PrayerRequestFragment)
 }

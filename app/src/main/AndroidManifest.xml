@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Starter_app_mvp">
         <activity
+            android:name=".ui.home.MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.home.WaitlistActivity"
             android:exported="false" />
         <activity android:name=".ui.home.LandingPageActivity" />

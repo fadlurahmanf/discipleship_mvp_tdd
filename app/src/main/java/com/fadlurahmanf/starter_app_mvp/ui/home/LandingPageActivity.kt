@@ -1,5 +1,6 @@
 package com.fadlurahmanf.starter_app_mvp.ui.home
 
+import android.content.Intent
 import android.view.View
 import com.fadlurahmanf.starter_app_mvp.BaseApp
 import com.fadlurahmanf.starter_app_mvp.R
@@ -15,7 +16,7 @@ import com.fadlurahmanf.starter_app_mvp.ui.home.presenter.LandingPagePresenter
 import javax.inject.Inject
 
 class LandingPageActivity : BaseMvpActivity<LandingPagePresenter,ActivityLandingPageBinding>(ActivityLandingPageBinding::inflate),
-    LandingPageContract.View {
+    LandingPageContract.View, MyGroupAdapter.StudyGroupCallBack {
     @Inject
     lateinit var presenter: LandingPagePresenter
 
@@ -41,9 +42,11 @@ class LandingPageActivity : BaseMvpActivity<LandingPagePresenter,ActivityLanding
     private var myGroups:ArrayList<MyGroupResponse> = arrayListOf()
     private fun initAdapter() {
         adapter = MyGroupAdapter(myGroups)
+        adapter.setOnItemClickCallback(this)
         binding?.rvStudyGroup?.adapter = adapter
         refreshRecycleView()
     }
+
 
     private fun refreshRecycleView(){
         adapter.notifyDataSetChanged()
@@ -79,6 +82,11 @@ class LandingPageActivity : BaseMvpActivity<LandingPagePresenter,ActivityLanding
 
     override fun myTrainingFailed(message: String?) {
         
+    }
+
+    override fun onActiveStudyGroupCallBack(group: MyGroupResponse?) {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 
 }

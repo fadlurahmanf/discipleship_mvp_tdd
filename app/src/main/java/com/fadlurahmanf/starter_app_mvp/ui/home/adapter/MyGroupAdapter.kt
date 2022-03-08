@@ -4,9 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.fadlurahmanf.starter_app_mvp.R
 import com.fadlurahmanf.starter_app_mvp.core.extension.formatDate
 import com.fadlurahmanf.starter_app_mvp.data.response.auth.MyGroupResponse
 import com.fadlurahmanf.starter_app_mvp.databinding.ItemStudygroupActiveBinding
@@ -19,13 +17,15 @@ class MyGroupAdapter(var list:ArrayList<MyGroupResponse>):RecyclerView.Adapter<R
     private lateinit var bindingCanceled:ItemStudygroupCanceledBinding
     private lateinit var context: Context
 
-    private lateinit var activeStudyGroupClickCallback: ActiveStudyGroupClickCallback
+    private lateinit var studyGroupCallBack: StudyGroupCallBack
 
-    fun setOnItemClickCallback(activeStudyGroupClickCallback: ActiveStudyGroupClickCallback){
-        this.activeStudyGroupClickCallback = activeStudyGroupClickCallback
+    fun setOnItemClickCallback(studyGroupCallBack: StudyGroupCallBack){
+        this.studyGroupCallBack = studyGroupCallBack
     }
 
-    inner class ActiveViewHolder(view:View):RecyclerView.ViewHolder(view){}
+    inner class ActiveViewHolder(view:View):RecyclerView.ViewHolder(view){
+
+    }
 
     inner class CanceledViewHolder(view:View):RecyclerView.ViewHolder(view){}
 
@@ -67,6 +67,9 @@ class MyGroupAdapter(var list:ArrayList<MyGroupResponse>):RecyclerView.Adapter<R
 //            var holder = holder as ActiveViewHolder
             bindingActive.tvWeeklyMeeting.text = studyGroup.study?.weeklyMeetingTime?:""
             bindingActive.tvInfoChangeStudygroup.text = studyGroup.changeAllowedDeadline?.formatDate()
+            holder.itemView.setOnClickListener {
+                studyGroupCallBack.onActiveStudyGroupCallBack(studyGroup)
+            }
 //            holder.tvWeeklyMeetingTime.text = studyGroup.study?.weeklyMeetingTime?:""
 //            holder.tvInfoChangeStudyGroup.text = context.getString(R.string.info_allowed_change_study_group, studyGroup.changeAllowedDeadline?.formatDate()?:"")
 //            holder.tvIdStudyGroup.text = studyGroup.code?:""
@@ -94,7 +97,7 @@ class MyGroupAdapter(var list:ArrayList<MyGroupResponse>):RecyclerView.Adapter<R
         }
     }
 
-    interface ActiveStudyGroupClickCallback{
-        fun onItemClicked(group:MyGroupResponse?)
+    interface StudyGroupCallBack{
+        fun onActiveStudyGroupCallBack(group:MyGroupResponse?)
     }
 }

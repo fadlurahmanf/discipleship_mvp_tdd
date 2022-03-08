@@ -5,11 +5,15 @@
       <map>
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/drawable-v24/white_rounded_30.xml" value="0.18" />
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/drawable/dark_red_rounded_30.xml" value="0.1815" />
+        <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/drawable/white_circle.xml" value="0.1815" />
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/activity_landing_page.xml" value="0.22" />
+        <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/activity_waitlist.xml" value="0.33" />
+        <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/fragment_group_board.xml" value="0.5" />
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/fragment_waitlist_first.xml" value="0.2064814814814815" />
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/navigation_view_layout.xml" value="0.2064814814814815" />
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/toolbar.xml" value="0.2814814814814815" />
+        <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/toolbar_group_board.xml" value="0.5" />
       </map>
     </option>
   </component>
