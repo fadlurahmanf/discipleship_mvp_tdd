@@ -5,6 +5,7 @@ import android.view.View
 import com.fadlurahmanf.starter_app_mvp.BaseApp
 import com.fadlurahmanf.starter_app_mvp.R
 import com.fadlurahmanf.starter_app_mvp.base.BaseMvpActivity
+import com.fadlurahmanf.starter_app_mvp.data.repository.core.AuthRepository
 import com.fadlurahmanf.starter_app_mvp.data.response.auth.LoginResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.auth.MyGroupResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.auth.MyTrainingResponse
@@ -84,9 +85,15 @@ class LandingPageActivity : BaseMvpActivity<LandingPagePresenter,ActivityLanding
         
     }
 
+    @Inject
+    lateinit var authRepository: AuthRepository
+
     override fun onActiveStudyGroupCallBack(group: MyGroupResponse?) {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+        if (group != null){
+            authRepository.groupChosen = group
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 }

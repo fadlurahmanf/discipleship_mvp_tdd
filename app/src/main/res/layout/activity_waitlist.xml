@@ -31,7 +31,7 @@
                 app:tabTextAppearance="@style/Font.Bold.16"
                 app:tabSelectedTextColor="@color/red"
                 android:background="@drawable/dark_red_rounded_30"
-                app:tabIndicator="@drawable/white_rounded_30"
+                app:tabIndicator="@drawable/white_corner_30"
                 app:tabIndicatorColor="@color/white"/>
         </RelativeLayout>
     </RelativeLayout>

@@ -7,13 +7,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:padding="10dp"
-        android:background="@drawable/white_all_rounded_10"
+        android:background="@drawable/white_corner_10"
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ll_studygroup_status"
-            android:background="@drawable/light_purple_rounded_30"
+            android:background="@drawable/light_purple_corner_30"
             android:paddingVertical="5dp"
             android:paddingHorizontal="8dp"
             app:layout_constraintTop_toTopOf="parent"

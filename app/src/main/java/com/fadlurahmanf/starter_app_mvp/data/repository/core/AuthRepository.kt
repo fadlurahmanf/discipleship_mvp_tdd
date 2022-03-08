@@ -50,6 +50,19 @@ class AuthRepository @Inject constructor(context: Context):BasePreference(contex
         }
     }
 
+    var groupChosen:MyGroupResponse ?= null
+    get() {
+        return getData(ParamsKeySP.GROUP_CHOSEN, MyGroupResponse::class.java)
+    }set(value) {
+        if (value == null){
+            clearData(ParamsKeySP.GROUP_CHOSEN)
+            field = null
+        }else{
+            saveData(ParamsKeySP.GROUP_CHOSEN, value)
+            field = value
+        }
+    }
+
     var myGroup:List<MyGroupResponse> ?= null
     get() {
         return getListData(ParamsKeySP.MY_GROUP, MyGroupResponse::class.java)

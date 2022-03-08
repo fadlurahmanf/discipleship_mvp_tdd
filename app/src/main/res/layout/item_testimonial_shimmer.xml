@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/white_top_rounded_10">
+        android:background="@drawable/white_top_corner_10">
         <ImageView
             android:layout_width="15dp"
             android:layout_height="15dp"

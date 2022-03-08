@@ -21,6 +21,7 @@ object ParamsKeySP {
     //AUTH REPOSITORY
     const val PASSWORD_USER = "PASSWORD_USER"
     const val LOGIN_RESPONSE = "LOGIN_RESPONSE"
+    const val GROUP_CHOSEN = "GROUP_CHOSEN"
     const val BEARER_TOKEN = "BEARER_TOKEN"
     const val MY_GROUP = "MY_GROUP"
     const val MY_SUBSCRIPTION = "MY_SUBSCRIPTION"
