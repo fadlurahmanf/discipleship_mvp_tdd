@@ -6,6 +6,7 @@ import com.fadlurahmanf.starter_app_mvp.base.BaseMvpFragment
 import com.fadlurahmanf.starter_app_mvp.data.response.post.PostResponse
 import com.fadlurahmanf.starter_app_mvp.databinding.FragmentGroupBoardBinding
 import com.fadlurahmanf.starter_app_mvp.di.component.HomeComponent
+import com.fadlurahmanf.starter_app_mvp.ui.home.MainActivity
 import com.fadlurahmanf.starter_app_mvp.ui.home.adapter.PostAdapter
 import com.fadlurahmanf.starter_app_mvp.ui.home.presenter.GroupBoardContract
 import com.fadlurahmanf.starter_app_mvp.ui.home.presenter.GroupBoardPresenter
@@ -27,8 +28,20 @@ class GroupBoardFragment : BaseMvpFragment<FragmentGroupBoardBinding, GroupBoard
     }
 
     override fun setup() {
+        initAction()
         initAdapter()
         presenter.getAllPostFirst()
+    }
+
+    private fun initAction() {
+        binding?.toolbar?.icLeftMenu?.setOnClickListener {
+            (this.requireActivity() as MainActivity).openCloseDrawer()
+        }
+
+        binding?.swipeRefresh?.setOnRefreshListener {
+            binding?.swipeRefresh?.isRefreshing = true
+            presenter.getAllPost()
+        }
     }
 
     private lateinit var adapter:PostAdapter
@@ -49,6 +62,7 @@ class GroupBoardFragment : BaseMvpFragment<FragmentGroupBoardBinding, GroupBoard
     }
 
     override fun getAllPostFirstLoaded(listPost: List<PostResponse>) {
+        binding?.swipeRefresh?.isRefreshing = false
         binding?.llPostShimmer?.visibility = View.GONE
         binding?.rvPost?.visibility = View.VISIBLE
         this.listPost.clear()
@@ -57,7 +71,10 @@ class GroupBoardFragment : BaseMvpFragment<FragmentGroupBoardBinding, GroupBoard
     }
 
     override fun getAllPostLoaded(listPost: List<PostResponse>) {
-
+        binding?.swipeRefresh?.isRefreshing = false
+        this.listPost.clear()
+        this.listPost.addAll(listPost)
+        refreshRecycleView()
     }
 
     override fun getAllPostFailed(message: String?) {

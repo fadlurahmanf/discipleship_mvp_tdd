@@ -1,9 +1,8 @@
 package com.fadlurahmanf.starter_app_mvp.ui.home
 
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
 import com.fadlurahmanf.starter_app_mvp.BaseApp
 import com.fadlurahmanf.starter_app_mvp.R
 import com.fadlurahmanf.starter_app_mvp.base.BaseActivity
@@ -37,6 +36,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             if (currentIndexFragment != 2){
                 addFragment(2)
             }
+        }
+    }
+
+    fun openCloseDrawer(){
+        if (binding?.drawerLayout?.isDrawerOpen(GravityCompat.START) == true){
+            binding?.drawerLayout?.closeDrawer(GravityCompat.START)
+        }else{
+            binding?.drawerLayout?.openDrawer(GravityCompat.START)
         }
     }
 

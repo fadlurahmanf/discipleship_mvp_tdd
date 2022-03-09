@@ -28,5 +28,18 @@ class GroupBoardPresenter @Inject constructor(
     }
 
     override fun getAllPost() {
+        addSubscription(postEntity.getAllPost(authRepository.groupChosen!!.id!!).uiSubscribe(
+            {
+                if (it.code == 100 && it.data != null){
+                    view?.getAllPostLoaded(it.data!!)
+                }else{
+                    view?.getAllPostFailed(it.message)
+                }
+            },
+            {
+                view?.getAllPostFailed(it.message)
+            },
+            {}
+        ))
     }
 }
