@@ -2,7 +2,7 @@ package com.fadlurahmanf.starter_app_mvp.ui.auth.presenter
 
 import com.fadlurahmanf.starter_app_mvp.core.extension.isValidEmail
 import com.fadlurahmanf.starter_app_mvp.data.body.auth.LoginBody
-import com.fadlurahmanf.starter_app_mvp.data.entity.auth.AuthEntity
+import com.fadlurahmanf.starter_app_mvp.data.entity.auth.UserEntity
 import com.fadlurahmanf.starter_app_mvp.data.repository.core.AuthRepository
 import com.fadlurahmanf.starter_app_mvp.data.response.auth.LoginResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.core.BaseResponse
@@ -11,7 +11,6 @@ import io.reactivex.rxjava3.android.plugins.RxAndroidPlugins
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.schedulers.Schedulers
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -27,7 +26,7 @@ import org.mockito.kotlin.inOrder
 class LoginPresenterTest{
 
     @Mock
-    lateinit var authEntity: AuthEntity
+    lateinit var userEntity: UserEntity
 
     @Mock
     lateinit var view:LoginContract.View
@@ -45,7 +44,7 @@ class LoginPresenterTest{
     fun beforeEach(){
         MockitoAnnotations.openMocks(this)
         authRepository = AuthRepository(spMockBuilder.createContext())
-        presenter = LoginPresenter(authEntity, authRepository)
+        presenter = LoginPresenter(userEntity, authRepository)
         presenter.view = view
 
 
@@ -62,16 +61,16 @@ class LoginPresenterTest{
             accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpha3VuaW4xMTQwQGdtYWlsLmNvbSIsInN1YiI6Niwicm9sZSI6InBhcnRpY2lwYW50IiwiaWF0IjoxNjQyNDk2MjcxfQ.h7mGkLtlKM_E5qKX0iIJKasgcVFC3uckKJ4Nz1E0Lgg"
         ))
 
-        Mockito.`when`(authEntity.login(loginBody)).thenReturn(
+        Mockito.`when`(userEntity.login(loginBody)).thenReturn(
             Observable.just(response)
         )
 
         presenter.login(loginBody.email, loginBody.password)
 
-        val inOrder = inOrder(view, authEntity)
+        val inOrder = inOrder(view, userEntity)
 
         inOrder.verify(view, Mockito.times(1)).loadingDialog()
-        inOrder.verify(authEntity, Mockito.times(1)).login(loginBody)
+        inOrder.verify(userEntity, Mockito.times(1)).login(loginBody)
         inOrder.verify(view, Mockito.times(1)).dismissLoadingDialog()
         assertTrue(presenter.authRepository.password != null)
         assertTrue(presenter.authRepository.bearerToken != null)
@@ -86,16 +85,16 @@ class LoginPresenterTest{
         assumeTrue(!loginBody.password.isNullOrEmpty())
         var response = BaseResponse<LoginResponse>(code = 100, message = "OK", data = null)
 
-        Mockito.`when`(authEntity.login(loginBody)).thenReturn(
+        Mockito.`when`(userEntity.login(loginBody)).thenReturn(
             Observable.just(response)
         )
 
         presenter.login(loginBody.email, loginBody.password)
 
-        val inOrder = inOrder(view, authEntity)
+        val inOrder = inOrder(view, userEntity)
 
         inOrder.verify(view, Mockito.times(1)).loadingDialog()
-        inOrder.verify(authEntity, Mockito.times(1)).login(loginBody)
+        inOrder.verify(userEntity, Mockito.times(1)).login(loginBody)
         inOrder.verify(view, Mockito.times(1)).dismissLoadingDialog()
         inOrder.verify(view, Mockito.times(1)).loginFailed(response.message)
         inOrder.verifyNoMoreInteractions()
@@ -108,14 +107,14 @@ class LoginPresenterTest{
         assumeTrue(!loginBody.password.isNullOrEmpty() && loginBody.password.length >= 6)
         val response = BaseResponse<LoginResponse>(code = 999, message = "NOT OK", data = LoginResponse())
 
-        Mockito.`when`(authEntity.login(loginBody)).thenReturn(Observable.just(response))
+        Mockito.`when`(userEntity.login(loginBody)).thenReturn(Observable.just(response))
 
         presenter.login(loginBody.email, loginBody.password)
 
-        val inOrder = inOrder(view, authEntity)
+        val inOrder = inOrder(view, userEntity)
 
         inOrder.verify(view, Mockito.times(1)).loadingDialog()
-        inOrder.verify(authEntity, Mockito.times(1)).login(loginBody)
+        inOrder.verify(userEntity, Mockito.times(1)).login(loginBody)
         inOrder.verify(view, Mockito.times(1)).dismissLoadingDialog()
         inOrder.verify(view, Mockito.times(1)).loginFailed(response.message)
         inOrder.verifyNoMoreInteractions()

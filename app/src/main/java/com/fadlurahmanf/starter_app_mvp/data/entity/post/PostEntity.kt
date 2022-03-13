@@ -3,6 +3,7 @@ package com.fadlurahmanf.starter_app_mvp.data.entity.post
 import android.content.Context
 import com.fadlurahmanf.starter_app_mvp.base.network.AuthAbstractNetwork
 import com.fadlurahmanf.starter_app_mvp.data.api.post.PostApi
+import com.fadlurahmanf.starter_app_mvp.data.entity.core.TestimonialEntity
 import com.fadlurahmanf.starter_app_mvp.data.interceptor.AuthInterceptor
 import com.fadlurahmanf.starter_app_mvp.data.repository.core.AuthRepository
 import okhttp3.MultipartBody
@@ -11,8 +12,9 @@ import javax.inject.Inject
 
 class PostEntity @Inject constructor(
     private var authRepository: AuthRepository,
-    private var context: Context
-): AuthAbstractNetwork<PostApi>(authRepository, context) {
+    private var context: Context,
+    private var testimonialEntity: TestimonialEntity
+): AuthAbstractNetwork<PostApi>(authRepository, context, testimonialEntity) {
     override fun getApi(): Class<PostApi> {
         return PostApi::class.java
     }

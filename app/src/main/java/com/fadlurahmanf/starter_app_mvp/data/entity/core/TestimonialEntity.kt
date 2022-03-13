@@ -13,4 +13,6 @@ class TestimonialEntity @Inject constructor(
     }
 
     fun getTestimonial() = networkService(30).getTestimonial()
+
+    fun getTestimonialCall() = networkService(30).getTestimonialCall()
 }

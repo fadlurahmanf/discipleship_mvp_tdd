@@ -75,6 +75,7 @@ dependencies {
 
     //testing espresso
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+//    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
 
     testImplementation 'org.json:json:20180813'
 

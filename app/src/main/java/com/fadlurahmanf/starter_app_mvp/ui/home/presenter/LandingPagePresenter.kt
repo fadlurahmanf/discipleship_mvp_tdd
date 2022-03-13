@@ -2,7 +2,7 @@ package com.fadlurahmanf.starter_app_mvp.ui.home.presenter
 
 import com.fadlurahmanf.starter_app_mvp.base.BasePresenter
 import com.fadlurahmanf.starter_app_mvp.core.extension.uiSubscribe
-import com.fadlurahmanf.starter_app_mvp.data.entity.auth.AuthEntity
+import com.fadlurahmanf.starter_app_mvp.data.entity.auth.UserWithAuthEntity
 import com.fadlurahmanf.starter_app_mvp.data.repository.core.AuthRepository
 import com.fadlurahmanf.starter_app_mvp.data.response.auth.LoginResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.auth.MyGroupResponse
@@ -12,7 +12,7 @@ import io.reactivex.rxjava3.functions.BiFunction
 import javax.inject.Inject
 
 class LandingPagePresenter @Inject constructor(
-    var authEntity: AuthEntity,
+    var userWithAuthEntity: UserWithAuthEntity,
     var authRepository: AuthRepository
 ) : BasePresenter<LandingPageContract.View>(), LandingPageContract.Presenter {
     data class PairGroupSubscriptionResponse(
@@ -24,8 +24,8 @@ class LandingPagePresenter @Inject constructor(
         view?.myGroupAndSubscriptionLoading()
         addSubscription(
             Observable.zip(
-                authEntity.getMyGroups(authRepository.bearerToken!!),
-                authEntity.getSubscription(authRepository.bearerToken!!),
+                userWithAuthEntity.getMyGroups(),
+                userWithAuthEntity.getSubscription(),
                 BiFunction { t1, t2 -> PairGroupSubscriptionResponse(t1, t2) }
             ).uiSubscribe(
                 {
@@ -53,7 +53,7 @@ class LandingPagePresenter @Inject constructor(
     override fun getMyTraining() {
         view?.getTrainingLoading()
         addSubscription(
-            authEntity.getMyTrainingStudyTopic(authRepository.bearerToken!!)
+            userWithAuthEntity.getMyTrainingStudyTopic()
                 .uiSubscribe(
                     {
                         if (it.code == 100 && it.data != null){

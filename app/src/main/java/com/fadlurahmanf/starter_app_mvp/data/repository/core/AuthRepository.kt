@@ -13,6 +13,7 @@ import javax.inject.Singleton
 class AuthRepository @Inject constructor(context: Context):BasePreference(context) {
     var bearerToken:String ?= null
     get() {
+//        Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRmZmFqYXJpQGdtYWlsLmNvbSIsInN1YiI6MjIsInJvbGUiOiJwYXJ0aWNpcGFudCIsImlhdCI6MTY0NjQ1ODczOH0.APr6QtCXFfI2lozVSdFVf43pjs5SgJteMxPJmdSRJj8
         return getString(ParamsKeySP.BEARER_TOKEN)
     }set(value) {
         if (value == null){

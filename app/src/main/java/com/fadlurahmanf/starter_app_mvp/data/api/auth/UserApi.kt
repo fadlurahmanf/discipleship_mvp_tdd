@@ -10,7 +10,7 @@ import com.fadlurahmanf.starter_app_mvp.data.response.core.BaseResponse
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.*
 
-interface AuthApi {
+interface UserApi {
     @POST("api/user/auth/login")
     fun login(@Body body: LoginBody) : Observable<BaseResponse<LoginResponse>>
 
@@ -18,17 +18,11 @@ interface AuthApi {
     fun regis(@Body body:RegisterBody) : Observable<BaseResponse<Nullable>>
 
     @GET("api/user/subscription/all")
-    fun getMySubscriptions(
-        @Header("Authorization") authorization:String
-    ) : Observable<BaseResponse<List<LoginResponse.User.Subscription>>>
+    fun getMySubscriptions() : Observable<BaseResponse<List<LoginResponse.User.Subscription>>>
 
     @GET("api/study-group/my")
-    fun getMyGroup(
-        @Header("Authorization") authorization: String
-    ) : Observable<BaseResponse<List<MyGroupResponse>>>
+    fun getMyGroup() : Observable<BaseResponse<List<MyGroupResponse>>>
 
     @GET("api/training/study/all")
-    fun getMyTrainingStudyTopic(
-        @Header("Authorization") authorization: String
-    ) : Observable<BaseResponse<List<MyTrainingResponse>>>
+    fun getMyTrainingStudyTopic() : Observable<BaseResponse<List<MyTrainingResponse>>>
 }

@@ -31,6 +31,7 @@ class SplashActivity : BaseMvpActivity<SplashPresenter, ActivitySplashBinding>(A
         setTransparentStatusBar()
         supportActionBar?.hide()
         setStatusBarStyle(R.color.white)
+        authRepository.bearerToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRmZmFqYXJpQGdtYWlsLmNvbSIsInN1YiI6MjIsInJvbGUiOiJwYXJ0aWNpcGFudCIsImlhdCI6MTY0NjQ1ODczOH0.APr6QtCXFfI2lozVSdFVf43pjs5SgJteMxPJmdSRJj8"
         presenter.checkUpdateLanguage()
     }
 
@@ -49,7 +50,6 @@ class SplashActivity : BaseMvpActivity<SplashPresenter, ActivitySplashBinding>(A
 
     override fun goToLandingPage(data: CheckUpdateResponse) {
         val intent = Intent(this, LandingPageActivity::class.java)
-//        val intent = Intent(this, WaitlistActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
     }
