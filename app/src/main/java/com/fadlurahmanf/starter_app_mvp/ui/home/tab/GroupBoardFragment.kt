@@ -1,11 +1,16 @@
 package com.fadlurahmanf.starter_app_mvp.ui.home.tab
 
+import android.content.Intent
 import android.view.View
 import com.fadlurahmanf.starter_app_mvp.BaseApp
+import com.fadlurahmanf.starter_app_mvp.base.BaseActivity
 import com.fadlurahmanf.starter_app_mvp.base.BaseMvpFragment
 import com.fadlurahmanf.starter_app_mvp.data.response.post.PostResponse
+import com.fadlurahmanf.starter_app_mvp.databinding.ActivityMainBinding
 import com.fadlurahmanf.starter_app_mvp.databinding.FragmentGroupBoardBinding
 import com.fadlurahmanf.starter_app_mvp.di.component.HomeComponent
+import com.fadlurahmanf.starter_app_mvp.ui.auth.LoginActivity
+import com.fadlurahmanf.starter_app_mvp.ui.guest_mode.GuestModeActivity
 import com.fadlurahmanf.starter_app_mvp.ui.home.MainActivity
 import com.fadlurahmanf.starter_app_mvp.ui.home.adapter.PostAdapter
 import com.fadlurahmanf.starter_app_mvp.ui.home.presenter.GroupBoardContract
@@ -41,6 +46,15 @@ class GroupBoardFragment : BaseMvpFragment<FragmentGroupBoardBinding, GroupBoard
         binding?.swipeRefresh?.setOnRefreshListener {
             binding?.swipeRefresh?.isRefreshing = true
             presenter.getAllPost()
+        }
+
+
+        (requireActivity() as MainActivity).binding?.navViewLayout?.btnLogin?.setOnClickListener {
+            val intent1 = Intent(this.requireActivity(), GuestModeActivity::class.java)
+            intent1.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            val intent2 = Intent(this.requireActivity(), LoginActivity::class.java)
+            startActivity(intent1)
+            startActivity(intent2)
         }
     }
 
@@ -86,6 +100,10 @@ class GroupBoardFragment : BaseMvpFragment<FragmentGroupBoardBinding, GroupBoard
     }
 
     override fun onMoreClicked(post: PostResponse?) {
+        showOkDialog(
+            title = "TES",
+            content = "HALO"
+        )
     }
 
 }

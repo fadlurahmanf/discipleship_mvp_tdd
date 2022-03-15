@@ -52,26 +52,26 @@ abstract class BaseFragment<VB:ViewBinding>(
         okText:String ?= null,
         okListener:() -> Unit ?= {dismissOkDialog()}
     ){
-//        if (okDialog == null){
-//            okDialog = OkDialog()
-//            val bundle = Bundle()
-//            bundle.putString(OkDialog.TITLE, title)
-//            bundle.putString(OkDialog.CONTENT, content)
-//            bundle.putBoolean(OkDialog.IS_CANCELABLE, isCancelable)
-//            bundle.putString(OkDialog.OK_TEXT, okText)
-//            okDialog?.arguments = bundle
-//            okDialog?.setOkListener {
-//                okListener()
-//            }
-//            okDialog?.show(supportFragmentManager, OkDialog::class.java.simpleName)
-//        }
+        if (okDialog == null){
+            okDialog = OkDialog()
+            val bundle = Bundle()
+            bundle.putString(OkDialog.TITLE, title)
+            bundle.putString(OkDialog.CONTENT, content)
+            bundle.putBoolean(OkDialog.IS_CANCELABLE, isCancelable)
+            bundle.putString(OkDialog.OK_TEXT, okText)
+            okDialog?.arguments = bundle
+            okDialog?.setOkListener {
+                okListener()
+            }
+            okDialog?.show(requireActivity().supportFragmentManager, OkDialog::class.java.simpleName)
+        }
     }
 
     fun dismissOkDialog(){
-//        if (okDialog != null){
-//            okDialog?.dismiss()
-//            okDialog = null
-//        }
+        if (okDialog != null){
+            okDialog?.dismiss()
+            okDialog = null
+        }
     }
 
     private var confirmDialog: ConfirmDialog?= null

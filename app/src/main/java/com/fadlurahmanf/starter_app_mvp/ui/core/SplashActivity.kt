@@ -1,6 +1,8 @@
 package com.fadlurahmanf.starter_app_mvp.ui.core
 
 import android.content.Intent
+import android.net.Uri
+import android.os.Handler
 import com.fadlurahmanf.starter_app_mvp.BaseApp
 import com.fadlurahmanf.starter_app_mvp.R
 import com.fadlurahmanf.starter_app_mvp.base.BaseMvpActivity
@@ -8,6 +10,7 @@ import com.fadlurahmanf.starter_app_mvp.data.repository.core.AuthRepository
 import com.fadlurahmanf.starter_app_mvp.data.response.core.CheckUpdateResponse
 import com.fadlurahmanf.starter_app_mvp.databinding.ActivitySplashBinding
 import com.fadlurahmanf.starter_app_mvp.di.component.CoreComponent
+import com.fadlurahmanf.starter_app_mvp.ui.auth.ResetPasswordActivity
 import com.fadlurahmanf.starter_app_mvp.ui.core.presenter.SplashContract
 import com.fadlurahmanf.starter_app_mvp.ui.core.presenter.SplashPresenter
 import com.fadlurahmanf.starter_app_mvp.ui.guest_mode.GuestModeActivity
@@ -27,12 +30,26 @@ class SplashActivity : BaseMvpActivity<SplashPresenter, ActivitySplashBinding>(A
     @Inject
     lateinit var authRepository: AuthRepository
 
+    private var uriDeepLink : Uri ?= null
+
     override fun setup() {
         setTransparentStatusBar()
         supportActionBar?.hide()
         setStatusBarStyle(R.color.white)
+        uriDeepLink = intent.data
         authRepository.bearerToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRmZmFqYXJpQGdtYWlsLmNvbSIsInN1YiI6MjIsInJvbGUiOiJwYXJ0aWNpcGFudCIsImlhdCI6MTY0NjQ1ODczOH0.APr6QtCXFfI2lozVSdFVf43pjs5SgJteMxPJmdSRJj8"
         presenter.checkUpdateLanguage()
+    }
+
+    private fun handleDeepLink(){
+        if (uriDeepLink != null){
+            if (uriDeepLink?.path?.contains("api/user/auth/forgot-password-confirmation") == true){
+                val intent = Intent(this, ResetPasswordActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        }
+        uriDeepLink = null
     }
 
     @Inject
@@ -46,12 +63,16 @@ class SplashActivity : BaseMvpActivity<SplashPresenter, ActivitySplashBinding>(A
         val intent = Intent(this, GuestModeActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
+        finish()
+        handleDeepLink()
     }
 
     override fun goToLandingPage(data: CheckUpdateResponse) {
         val intent = Intent(this, LandingPageActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        finish()
         startActivity(intent)
+        handleDeepLink()
     }
 
     override fun checkUpdateLanguageFailed(message:String?) {

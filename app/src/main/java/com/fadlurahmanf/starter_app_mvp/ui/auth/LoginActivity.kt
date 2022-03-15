@@ -108,6 +108,10 @@ class LoginActivity : BaseMvpActivity<LoginPresenter, ActivityLoginBinding>(Acti
             presenter.login(binding?.etEmail!!.text.toString(), binding?.etPassword!!.text.toString())
         }
 
+        binding?.tvForgotPassword?.setOnClickListener {
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun loginSuccess(response: LoginResponse) {
