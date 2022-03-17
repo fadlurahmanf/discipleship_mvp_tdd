@@ -21,7 +21,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun setup() {
         supportActionBar?.hide()
-        setStatusBarStyle(R.color.red, false)
+        setScreenStyle(R.color.red, false)
         addFragment(0)
         initAction()
     }

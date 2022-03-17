@@ -33,7 +33,7 @@ class LandingPageActivity : BaseMvpActivity<LandingPagePresenter,ActivityLanding
 
     override fun setup() {
         supportActionBar?.hide()
-        setStatusBarStyle(R.color.red, false)
+        setScreenStyle(R.color.red, isLight = false)
         initAdapter()
         presenter.getMyGroupAndMySubscription()
         presenter.getMyTraining()

@@ -6,7 +6,6 @@ import androidx.core.content.ContextCompat
 import com.fadlurahmanf.starter_app_mvp.BaseApp
 import com.fadlurahmanf.starter_app_mvp.R
 import com.fadlurahmanf.starter_app_mvp.base.BaseMvpActivity
-import com.fadlurahmanf.starter_app_mvp.data.repository.core.AuthRepository
 import com.fadlurahmanf.starter_app_mvp.data.response.core.TestimonialResponse
 import com.fadlurahmanf.starter_app_mvp.databinding.ActivityGuestModeBinding
 import com.fadlurahmanf.starter_app_mvp.di.component.CoreComponent
@@ -34,7 +33,7 @@ class GuestModeActivity : BaseMvpActivity<GuestModePresenter, ActivityGuestModeB
     }
 
     override fun setup() {
-        setStatusBarStyle(R.color.white, true)
+        setScreenStyle(R.color.white, true)
         supportActionBar?.hide()
         binding?.toolbar?.ivToolbar?.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_menu_red))
         binding?.toolbar?.ivToolbar?.setBackgroundResource(R.color.white)

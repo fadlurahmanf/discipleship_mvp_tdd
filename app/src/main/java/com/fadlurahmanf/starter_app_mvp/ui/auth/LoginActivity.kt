@@ -39,7 +39,7 @@ class LoginActivity : BaseMvpActivity<LoginPresenter, ActivityLoginBinding>(Acti
 
     override fun setup() {
         supportActionBar?.hide()
-        setStatusBarStyle(R.color.white, true)
+        setScreenStyle(R.color.white, true)
         initAction()
         initListener()
         checkButtonEnabled()

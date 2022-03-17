@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/fl"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gold_corner_15"
+        android:paddingVertical="5dp"
+        android:paddingRight="5dp"
+        android:paddingLeft="10dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cream_rounded_right_15"
+            android:paddingHorizontal="@dimen/dimen_10dp"
+            android:paddingVertical="@dimen/dimen_10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_verse"
+                android:text="Psalm 84:2-3"
+                style="@style/Font.Bold.14"
+                android:textColor="@color/black_grey"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_date"
+                android:text="May 10, 2021"
+                style="@style/Font.Regular.12"
+                android:textColor="@color/medium_grey"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/iv_edit"
+                android:text="Always keep our faith in God"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                style="@style/Font.Regular.14"
+                android:textColor="@color/black_grey"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_verse"
+                android:layout_marginRight="@dimen/dimen_10dp" />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/iv_edit"
+                android:src="@drawable/ic_edit"
+                android:layout_marginHorizontal="@dimen/dimen_10dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_verse"
+                app:layout_constraintEnd_toStartOf="@id/iv_delete"
+                android:layout_marginTop="@dimen/dimen_5dp"/>
+            <ImageView
+                android:layout_width="20sp"
+                android:layout_height="20dp"
+                android:id="@+id/iv_delete"
+                android:src="@drawable/ic_delete"
+                app:layout_constraintTop_toBottomOf="@id/tv_verse"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/dimen_5dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+</FrameLayout>

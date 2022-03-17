@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main_layout"
+    tools:context=".ui.sidemenu.mynotes.BibleVerseActivity">
+
+    <include layout="@layout/toolbar_back_red" android:id="@+id/toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/scroll_view"
+        android:layout_below="@id/toolbar"
+        android:layout_alignParentBottom="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/rl_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:paddingHorizontal="@dimen/dimen_15dp"
+                android:layout_alignParentTop="true"
+                android:id="@+id/tv_text_2"
+                android:text="This is the first sentence."
+                style="@style/Font.Regular.16"
+                android:textColor="@color/black_grey" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_verse_title"
+                android:layout_below="@id/tv_text_2"
+                android:padding="@dimen/dimen_15dp"
+                android:text="Psalm 84"
+                style="@style/Font.Bold.24"
+                android:textColor="@color/black_grey"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/dimen_15dp"
+                android:layout_below="@id/tv_verse_title"
+                android:id="@+id/tv_text"
+                android:text="This is the first sentence."
+                style="@style/Font.Regular.16"
+                android:textColor="@color/black_grey" />
+        </RelativeLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

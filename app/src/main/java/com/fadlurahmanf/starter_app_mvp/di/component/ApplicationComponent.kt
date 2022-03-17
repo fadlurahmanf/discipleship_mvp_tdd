@@ -14,6 +14,7 @@ interface ApplicationComponent {
     fun coreComponent(): CoreComponent.Factory
     fun authComponent(): AuthComponent.Factory
     fun homeComponent(): HomeComponent.Factory
+    fun sideMenuComponent(): SideMenuComponent.Factory
 
     @Component.Factory
     interface Factory{

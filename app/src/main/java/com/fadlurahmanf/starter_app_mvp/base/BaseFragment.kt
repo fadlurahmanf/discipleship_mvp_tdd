@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.fadlurahmanf.starter_app_mvp.BaseApp
+import com.fadlurahmanf.starter_app_mvp.di.component.ApplicationComponent
 import com.fadlurahmanf.starter_app_mvp.ui.core.SplashActivity
 import com.fadlurahmanf.starter_app_mvp.ui.core.dialog.ConfirmDialog
 import com.fadlurahmanf.starter_app_mvp.ui.core.dialog.LoadingDialog
@@ -18,6 +20,9 @@ typealias InflateFragment<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 abstract class BaseFragment<VB:ViewBinding>(
     private val inflateFragment:InflateFragment<VB>
 ):Fragment(), BaseView {
+
+    private lateinit var _appComponent:ApplicationComponent
+    val appComponent get() = _appComponent
 
     private var _binding:VB ?= null
     val binding get() = _binding
@@ -32,10 +37,15 @@ abstract class BaseFragment<VB:ViewBinding>(
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initAppComponent()
         injectView()
         super.onViewCreated(view, savedInstanceState)
         internalSetup()
         setup()
+    }
+
+    private fun initAppComponent() {
+        _appComponent = (requireActivity().applicationContext as BaseApp).appComponent
     }
 
     open fun internalSetup() {}

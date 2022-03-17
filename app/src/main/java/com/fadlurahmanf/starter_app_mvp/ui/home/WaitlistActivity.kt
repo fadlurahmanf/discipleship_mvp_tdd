@@ -1,7 +1,5 @@
 package com.fadlurahmanf.starter_app_mvp.ui.home
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import com.fadlurahmanf.starter_app_mvp.BaseApp
 import com.fadlurahmanf.starter_app_mvp.R
 import com.fadlurahmanf.starter_app_mvp.base.BaseActivity
@@ -21,7 +19,7 @@ class WaitlistActivity : BaseActivity<ActivityWaitlistBinding>(ActivityWaitlistB
 
     override fun setup() {
         supportActionBar?.hide()
-        setStatusBarStyle(R.color.red, false)
+        setScreenStyle(R.color.red, false)
         initPagerAdapter()
     }
 

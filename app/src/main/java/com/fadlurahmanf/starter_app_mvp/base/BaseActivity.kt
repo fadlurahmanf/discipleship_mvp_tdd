@@ -5,14 +5,15 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.WindowManager
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.viewbinding.ViewBinding
+import com.fadlurahmanf.starter_app_mvp.BaseApp
 import com.fadlurahmanf.starter_app_mvp.R
 import com.fadlurahmanf.starter_app_mvp.core.services.ConnectivityReceiver
+import com.fadlurahmanf.starter_app_mvp.di.component.ApplicationComponent
 import com.fadlurahmanf.starter_app_mvp.ui.core.SplashActivity
 import com.fadlurahmanf.starter_app_mvp.ui.core.dialog.ConfirmDialog
 import com.fadlurahmanf.starter_app_mvp.ui.core.dialog.LoadingDialog
@@ -25,10 +26,14 @@ abstract class BaseActivity<VB:ViewBinding>(
     var inflate:InflateLayoutActivity<VB>
 ):AppCompatActivity(), BaseView, ConnectivityReceiver.ConnectivityListener {
 
+    private lateinit var _appComponent:ApplicationComponent
+    val appComponent get() = _appComponent
+
     private var _binding:VB ?= null
     val binding get() = _binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        initComponent()
         injectView()
         super.onCreate(savedInstanceState)
         setLayout()
@@ -36,12 +41,16 @@ abstract class BaseActivity<VB:ViewBinding>(
         setup()
     }
 
+    private fun initComponent(){
+        _appComponent = (applicationContext as BaseApp).appComponent
+    }
+
     override fun onStart() {
         super.onStart()
         startConnectivityReceiver()
     }
 
-    open fun setStatusBarStyle(color:Int, isLight:Boolean = true){
+    open fun setScreenStyle(color:Int, isLight:Boolean = true){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val window = this.window
             val decorView = window.decorView

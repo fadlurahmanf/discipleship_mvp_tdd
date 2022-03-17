@@ -2,7 +2,6 @@ package com.fadlurahmanf.starter_app_mvp.ui.core
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Handler
 import com.fadlurahmanf.starter_app_mvp.BaseApp
 import com.fadlurahmanf.starter_app_mvp.R
 import com.fadlurahmanf.starter_app_mvp.base.BaseMvpActivity
@@ -15,7 +14,6 @@ import com.fadlurahmanf.starter_app_mvp.ui.core.presenter.SplashContract
 import com.fadlurahmanf.starter_app_mvp.ui.core.presenter.SplashPresenter
 import com.fadlurahmanf.starter_app_mvp.ui.guest_mode.GuestModeActivity
 import com.fadlurahmanf.starter_app_mvp.ui.home.LandingPageActivity
-import com.fadlurahmanf.starter_app_mvp.ui.home.WaitlistActivity
 import javax.inject.Inject
 
 class SplashActivity : BaseMvpActivity<SplashPresenter, ActivitySplashBinding>(ActivitySplashBinding::inflate),
@@ -35,7 +33,7 @@ class SplashActivity : BaseMvpActivity<SplashPresenter, ActivitySplashBinding>(A
     override fun setup() {
         setTransparentStatusBar()
         supportActionBar?.hide()
-        setStatusBarStyle(R.color.white)
+        setScreenStyle(R.color.white)
         uriDeepLink = intent.data
         authRepository.bearerToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRmZmFqYXJpQGdtYWlsLmNvbSIsInN1YiI6MjIsInJvbGUiOiJwYXJ0aWNpcGFudCIsImlhdCI6MTY0NjQ1ODczOH0.APr6QtCXFfI2lozVSdFVf43pjs5SgJteMxPJmdSRJj8"
         presenter.checkUpdateLanguage()
@@ -69,6 +67,7 @@ class SplashActivity : BaseMvpActivity<SplashPresenter, ActivitySplashBinding>(A
 
     override fun goToLandingPage(data: CheckUpdateResponse) {
         val intent = Intent(this, LandingPageActivity::class.java)
+//        val intent = Intent(this, MyNotesActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         finish()
         startActivity(intent)
