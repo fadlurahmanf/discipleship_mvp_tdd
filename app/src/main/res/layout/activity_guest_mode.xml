@@ -1,190 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.guest_mode.GuestModeActivity">
+    tools:context=".ui.guest_mode.GuestModeActivity"
+    tools:openDrawer="start">
 
-    <include layout="@layout/toolbar_back" android:id="@+id/toolbar"/>
-
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        android:layout_height="match_parent">
+        <include layout="@layout/toolbar_back" android:id="@+id/toolbar"/>
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="450dp"
-                android:id="@+id/cl_rv_testimonial"
-                android:background="@drawable/discipleship_book"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginBottom="20dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:id="@+id/tv_testimonial_error"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:text="ERROR TEXT GET TESTIMONIAL"
-                    android:gravity="center_horizontal"
-                    style="@style/Font.Bold.14"
-                    android:textColor="@color/red"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginBottom="70dp"/>
+                android:layout_height="match_parent">
 
-                <androidx.recyclerview.widget.RecyclerView
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:visibility="gone"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/rv_testimonial"
-                    android:orientation="horizontal"
-                    tools:listitem="@layout/item_testimonial"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"/>
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:visibility="visible"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/hsv_shimmer"
-                    android:orientation="horizontal"
-                    tools:listitem="@layout/item_testimonial_shimmer"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_height="450dp"
+                    android:id="@+id/cl_rv_testimonial"
+                    android:background="@drawable/discipleship_book"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginBottom="20dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent">
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <include layout="@layout/item_testimonial_shimmer"/>
-                        <include layout="@layout/item_testimonial_shimmer"/>
-                        <include layout="@layout/item_testimonial_shimmer"/>
-                    </LinearLayout>
-                </HorizontalScrollView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:visibility="gone"
+                        android:id="@+id/tv_testimonial_error"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:text="ERROR TEXT GET TESTIMONIAL"
+                        android:gravity="center_horizontal"
+                        style="@style/Font.Bold.14"
+                        android:textColor="@color/red"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginBottom="70dp"/>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_marginTop="20dp"
-                android:layout_marginHorizontal="15dp"
-                android:id="@+id/cl_browse_study"
-                app:layout_constraintTop_toBottomOf="@id/cl_rv_testimonial"
-                android:layout_height="200dp">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:visibility="gone"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rv_testimonial"
+                        android:orientation="horizontal"
+                        tools:listitem="@layout/item_testimonial"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"/>
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:visibility="visible"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/hsv_shimmer"
+                        android:orientation="horizontal"
+                        tools:listitem="@layout/item_testimonial_shimmer"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <include layout="@layout/item_testimonial_shimmer"/>
+                            <include layout="@layout/item_testimonial_shimmer"/>
+                            <include layout="@layout/item_testimonial_shimmer"/>
+                        </LinearLayout>
+                    </HorizontalScrollView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <ImageView
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/iv_browse_study"
-                    android:src="@drawable/card_browse_studies"
-                    android:scaleType="fitXY" />
+                    android:layout_marginTop="20dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:id="@+id/cl_browse_study"
+                    app:layout_constraintTop_toBottomOf="@id/cl_rv_testimonial"
+                    android:layout_height="200dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:text="Browse"
-                    android:id="@+id/tv_browse"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:textColor="@color/white"
-                    style="@style/Font.Bold.24"
-                    app:layout_constraintBottom_toTopOf="@id/tv_study"
-                    android:gravity="bottom"/>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/iv_browse_study"
+                        android:src="@drawable/card_browse_studies"
+                        android:scaleType="fitXY" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:text="Study"
-                    android:id="@+id/tv_study"
-                    android:gravity="top"
-                    app:layout_constraintTop_toBottomOf="@id/tv_browse"
-                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:text="Browse"
+                        android:id="@+id/tv_browse"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:textColor="@color/white"
+                        style="@style/Font.Bold.24"
+                        app:layout_constraintBottom_toTopOf="@id/tv_study"
+                        android:gravity="bottom"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:text="Study"
+                        android:id="@+id/tv_study"
+                        android:gravity="top"
+                        app:layout_constraintTop_toBottomOf="@id/tv_browse"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:textColor="@color/white"
+                        style="@style/Font.Bold.24" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:id="@+id/cl_about_bead"
+                    app:layout_constraintTop_toBottomOf="@id/cl_browse_study"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:textColor="@color/white"
-                    style="@style/Font.Bold.24" />
+                    android:layout_marginBottom="80dp"
+                    android:layout_height="200dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/iv_about_bead"
+                        android:src="@drawable/card_browse_studies"
+                        android:scaleType="fitXY" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:text="About"
+                        android:id="@+id/tv_about"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:textColor="@color/white"
+                        style="@style/Font.Bold.24"
+                        android:gravity="bottom"
+                        app:layout_constraintBottom_toTopOf="@id/tv_bead"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:text="BeADiscipleship"
+                        android:id="@+id/tv_bead"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:textColor="@color/white"
+                        style="@style/Font.Bold.24"
+                        android:gravity="top"
+                        app:layout_constraintTop_toBottomOf="@id/tv_about"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_marginTop="20dp"
-                android:layout_marginHorizontal="15dp"
-                android:id="@+id/cl_about_bead"
-                app:layout_constraintTop_toBottomOf="@id/cl_browse_study"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="80dp"
-                android:layout_height="200dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/iv_about_bead"
-                    android:src="@drawable/card_browse_studies"
-                    android:scaleType="fitXY" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:text="About"
-                    android:id="@+id/tv_about"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:textColor="@color/white"
-                    style="@style/Font.Bold.24"
-                    android:gravity="bottom"
-                    app:layout_constraintBottom_toTopOf="@id/tv_bead"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:text="BeADiscipleship"
-                    android:id="@+id/tv_bead"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:textColor="@color/white"
-                    style="@style/Font.Bold.24"
-                    android:gravity="top"
-                    app:layout_constraintTop_toBottomOf="@id/tv_about"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/floating"
-        android:layout_marginBottom="10dp"
-        android:layout_marginHorizontal="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:paddingVertical="15dp"
-        android:paddingHorizontal="15dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/outlined_gradient_red_20">
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Already have an account ?"
-            style="@style/Font.Regular.14"
-            android:textColor="@color/red"
-            android:layout_marginRight="5dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Font.Bold.14"
-            android:textColor="@color/red"
-            android:text="Login"/>
-    </LinearLayout>
+            android:id="@+id/floating"
+            android:layout_marginBottom="10dp"
+            android:layout_marginHorizontal="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingVertical="15dp"
+            android:paddingHorizontal="15dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@drawable/outlined_gradient_red_20">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Already have an account ?"
+                style="@style/Font.Regular.14"
+                android:textColor="@color/red"
+                android:layout_marginRight="5dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Font.Bold.14"
+                android:textColor="@color/red"
+                android:text="Login"/>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:id="@+id/nav_view">
+        <include layout="@layout/navigation_view_layout" android:id="@id/nav_view_layout"/>
+    </com.google.android.material.navigation.NavigationView>
+
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -136,7 +136,7 @@ abstract class BaseFragment<VB:ViewBinding>(
     }
 
     private var loadingDialog: LoadingDialog?= null
-    override fun loadingDialog(loadingText:String?, isCancelable:Boolean?) {
+    override fun loadingDialog(loadingText:String?, isCancelable:Boolean) {
 //        if (loadingDialog == null){
 //            loadingDialog = LoadingDialog()
 //            var bundle = Bundle()

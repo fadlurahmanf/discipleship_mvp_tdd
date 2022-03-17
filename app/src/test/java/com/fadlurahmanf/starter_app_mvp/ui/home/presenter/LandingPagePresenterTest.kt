@@ -1,6 +1,7 @@
 package com.fadlurahmanf.starter_app_mvp.ui.home.presenter
 
 import com.fadlurahmanf.starter_app_mvp.data.entity.auth.UserEntity
+import com.fadlurahmanf.starter_app_mvp.data.entity.auth.UserWithAuthEntity
 import com.fadlurahmanf.starter_app_mvp.data.repository.core.AuthRepository
 import com.fadlurahmanf.starter_app_mvp.data.response.auth.LoginResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.auth.MyGroupResponse
@@ -28,7 +29,7 @@ class LandingPagePresenterTest{
     private lateinit var authRepository: AuthRepository
 
     @Mock
-    lateinit var userEntity: UserEntity
+    lateinit var userWithAuthEntity: UserWithAuthEntity
 
     @Mock
     lateinit var view:LandingPageContract.View
@@ -39,7 +40,7 @@ class LandingPagePresenterTest{
     fun beforeEach(){
         MockitoAnnotations.openMocks(this)
         authRepository = Mockito.spy(AuthRepository(spMockBuilder.createContext()))
-        presenter = LandingPagePresenter(userEntity, authRepository)
+        presenter = LandingPagePresenter(userWithAuthEntity, authRepository)
         presenter.view = view
 
         RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
@@ -64,21 +65,21 @@ class LandingPagePresenterTest{
         assertTrue(authRepository.bearerToken?.contains("Bearer ") == true)
         assertTrue(authRepository.bearerToken?.replace("Bearer ", "")?.isNotEmpty() == true)
 
-        Mockito.`when`(userEntity.getMyGroups(presenter.authRepository.bearerToken!!)).thenReturn(
+        Mockito.`when`(userWithAuthEntity.getMyGroups()).thenReturn(
             Observable.just(groupResponse)
         )
 
-        Mockito.`when`(userEntity.getSubscription(presenter.authRepository.bearerToken!!)).thenReturn(
+        Mockito.`when`(userWithAuthEntity.getSubscription()).thenReturn(
             Observable.just(subscriptionResponse)
         )
 
         presenter.getMyGroupAndMySubscription()
 
-        val inOrder = inOrder(view, userEntity, authRepository)
+        val inOrder = inOrder(view, userWithAuthEntity, authRepository)
 
         inOrder.verify(view, Mockito.times(1)).myGroupAndSubscriptionLoading()
-        inOrder.verify(userEntity, Mockito.times(1)).getMyGroups(presenter.authRepository.bearerToken!!)
-        inOrder.verify(userEntity, Mockito.times(1)).getSubscription(presenter.authRepository.bearerToken!!)
+        inOrder.verify(userWithAuthEntity, Mockito.times(1)).getMyGroups()
+        inOrder.verify(userWithAuthEntity, Mockito.times(1)).getSubscription()
         assertTrue(groupResponse.code == 100)
         assertTrue(groupResponse.data != null)
         assertTrue(subscriptionResponse.code == 100)
@@ -105,21 +106,21 @@ class LandingPagePresenterTest{
         assertTrue(authRepository.bearerToken?.contains("Bearer ") == true)
         assertTrue(authRepository.bearerToken?.replace("Bearer ", "")?.isNotEmpty() == true)
 
-        Mockito.`when`(userEntity.getMyGroups(presenter.authRepository.bearerToken!!)).thenReturn(
+        Mockito.`when`(userWithAuthEntity.getMyGroups()).thenReturn(
             Observable.just(groupResponse)
         )
 
-        Mockito.`when`(userEntity.getSubscription(presenter.authRepository.bearerToken!!)).thenReturn(
+        Mockito.`when`(userWithAuthEntity.getSubscription()).thenReturn(
             Observable.just(subscriptionResponse)
         )
 
         presenter.getMyGroupAndMySubscription()
 
-        val inOrder = inOrder(view, userEntity, authRepository)
+        val inOrder = inOrder(view, userWithAuthEntity, authRepository)
 
         inOrder.verify(view, Mockito.times(1)).myGroupAndSubscriptionLoading()
-        inOrder.verify(userEntity, Mockito.times(1)).getMyGroups(presenter.authRepository.bearerToken!!)
-        inOrder.verify(userEntity, Mockito.times(1)).getSubscription(presenter.authRepository.bearerToken!!)
+        inOrder.verify(userWithAuthEntity, Mockito.times(1)).getMyGroups()
+        inOrder.verify(userWithAuthEntity, Mockito.times(1)).getSubscription()
         assertTrue(groupResponse.code == 100 && subscriptionResponse.code != 100)
         inOrder.verify(authRepository, Mockito.never()).myGroup = groupResponse.data
         inOrder.verify(authRepository, Mockito.never()).mySubscription = subscriptionResponse.data
@@ -140,21 +141,21 @@ class LandingPagePresenterTest{
         assertTrue(authRepository.bearerToken?.contains("Bearer ") == true)
         assertTrue(authRepository.bearerToken?.replace("Bearer ", "")?.isNotEmpty() == true)
 
-        Mockito.`when`(userEntity.getMyGroups(presenter.authRepository.bearerToken!!)).thenReturn(
+        Mockito.`when`(userWithAuthEntity.getMyGroups()).thenReturn(
             Observable.just(groupResponse)
         )
 
-        Mockito.`when`(userEntity.getSubscription(presenter.authRepository.bearerToken!!)).thenReturn(
+        Mockito.`when`(userWithAuthEntity.getSubscription()).thenReturn(
             Observable.error(throwableSubscription)
         )
 
         presenter.getMyGroupAndMySubscription()
 
-        val inOrder = inOrder(view, userEntity, authRepository)
+        val inOrder = inOrder(view, userWithAuthEntity, authRepository)
 
         inOrder.verify(view, Mockito.times(1)).myGroupAndSubscriptionLoading()
-        inOrder.verify(userEntity, Mockito.times(1)).getMyGroups(presenter.authRepository.bearerToken!!)
-        inOrder.verify(userEntity, Mockito.times(1)).getSubscription(presenter.authRepository.bearerToken!!)
+        inOrder.verify(userWithAuthEntity, Mockito.times(1)).getMyGroups()
+        inOrder.verify(userWithAuthEntity, Mockito.times(1)).getSubscription()
         inOrder.verify(view, Mockito.times(1)).myGroupAndMySubscriptionError(throwableSubscription.message)
     }
 
@@ -176,21 +177,21 @@ class LandingPagePresenterTest{
         assertTrue(authRepository.bearerToken?.contains("Bearer ") == true)
         assertTrue(authRepository.bearerToken?.replace("Bearer ", "")?.isNotEmpty() == true)
 
-        Mockito.`when`(userEntity.getMyGroups(presenter.authRepository.bearerToken!!)).thenReturn(
+        Mockito.`when`(userWithAuthEntity.getMyGroups()).thenReturn(
             Observable.just(groupResponse)
         )
 
-        Mockito.`when`(userEntity.getSubscription(presenter.authRepository.bearerToken!!)).thenReturn(
+        Mockito.`when`(userWithAuthEntity.getSubscription()).thenReturn(
             Observable.just(subscriptionResponse)
         )
 
         presenter.getMyGroupAndMySubscription()
 
-        val inOrder = inOrder(view, userEntity, authRepository)
+        val inOrder = inOrder(view, userWithAuthEntity, authRepository)
 
         inOrder.verify(view, Mockito.times(1)).myGroupAndSubscriptionLoading()
-        inOrder.verify(userEntity, Mockito.times(1)).getMyGroups(presenter.authRepository.bearerToken!!)
-        inOrder.verify(userEntity, Mockito.times(1)).getSubscription(presenter.authRepository.bearerToken!!)
+        inOrder.verify(userWithAuthEntity, Mockito.times(1)).getMyGroups()
+        inOrder.verify(userWithAuthEntity, Mockito.times(1)).getSubscription()
         inOrder.verify(presenter.authRepository, Mockito.never()).myGroup = groupResponse.data
         inOrder.verify(presenter.authRepository, Mockito.never()).mySubscription = subscriptionResponse.data
         inOrder.verify(view, Mockito.times(1)).myGroupAndMySubscriptionError(groupResponse.message)
@@ -210,21 +211,21 @@ class LandingPagePresenterTest{
         assertTrue(authRepository.bearerToken?.contains("Bearer ") == true)
         assertTrue(authRepository.bearerToken?.replace("Bearer ", "")?.isNotEmpty() == true)
 
-        Mockito.`when`(userEntity.getMyGroups(presenter.authRepository.bearerToken!!)).thenReturn(
+        Mockito.`when`(userWithAuthEntity.getMyGroups()).thenReturn(
             Observable.error(throwableGroup)
         )
 
-        Mockito.`when`(userEntity.getSubscription(presenter.authRepository.bearerToken!!)).thenReturn(
+        Mockito.`when`(userWithAuthEntity.getSubscription()).thenReturn(
             Observable.just(subscriptionResponse)
         )
 
         presenter.getMyGroupAndMySubscription()
 
-        val inOrder = inOrder(view, userEntity, authRepository)
+        val inOrder = inOrder(view, userWithAuthEntity, authRepository)
 
         inOrder.verify(view, Mockito.times(1)).myGroupAndSubscriptionLoading()
-        inOrder.verify(userEntity, Mockito.times(1)).getMyGroups(presenter.authRepository.bearerToken!!)
-        inOrder.verify(userEntity, Mockito.times(1)).getSubscription(presenter.authRepository.bearerToken!!)
+        inOrder.verify(userWithAuthEntity, Mockito.times(1)).getMyGroups()
+        inOrder.verify(userWithAuthEntity, Mockito.times(1)).getSubscription()
         inOrder.verify(view, Mockito.times(1)).myGroupAndMySubscriptionError(throwableGroup.message)
     }
 
@@ -242,15 +243,15 @@ class LandingPagePresenterTest{
         assertTrue(authRepository.bearerToken?.replace("Bearer ", "")?.isNotEmpty() == true)
 
         Mockito.`when`(
-            userEntity.getMyTrainingStudyTopic(authRepository.bearerToken!!)
+            userWithAuthEntity.getMyTrainingStudyTopic()
         ).thenReturn(Observable.just(response))
 
         presenter.getMyTraining()
 
-        val inOrder = inOrder(view, userEntity)
+        val inOrder = inOrder(view, userWithAuthEntity)
 
         inOrder.verify(view, Mockito.times(1)).getTrainingLoading()
-        inOrder.verify(userEntity, Mockito.times(1)).getMyTrainingStudyTopic(authRepository.bearerToken!!)
+        inOrder.verify(userWithAuthEntity, Mockito.times(1)).getMyTrainingStudyTopic()
         inOrder.verify(view, Mockito.times(1)).getTrainingLoaded(response.data!!)
     }
 
@@ -268,15 +269,15 @@ class LandingPagePresenterTest{
         assertTrue(authRepository.bearerToken?.replace("Bearer ", "")?.isNotEmpty() == true)
 
         Mockito.`when`(
-            userEntity.getMyTrainingStudyTopic(authRepository.bearerToken!!)
+            userWithAuthEntity.getMyTrainingStudyTopic()
         ).thenReturn(Observable.just(response))
 
         presenter.getMyTraining()
 
-        val inOrder = inOrder(view, userEntity)
+        val inOrder = inOrder(view, userWithAuthEntity)
 
         inOrder.verify(view, Mockito.times(1)).getTrainingLoading()
-        inOrder.verify(userEntity, Mockito.times(1)).getMyTrainingStudyTopic(authRepository.bearerToken!!)
+        inOrder.verify(userWithAuthEntity, Mockito.times(1)).getMyTrainingStudyTopic()
         inOrder.verify(view, Mockito.times(1)).myTrainingFailed(response.message)
     }
 
@@ -294,15 +295,15 @@ class LandingPagePresenterTest{
         assertTrue(authRepository.bearerToken?.replace("Bearer ", "")?.isNotEmpty() == true)
 
         Mockito.`when`(
-            userEntity.getMyTrainingStudyTopic(authRepository.bearerToken!!)
+            userWithAuthEntity.getMyTrainingStudyTopic()
         ).thenReturn(Observable.just(response))
 
         presenter.getMyTraining()
 
-        val inOrder = inOrder(view, userEntity)
+        val inOrder = inOrder(view, userWithAuthEntity)
 
         inOrder.verify(view, Mockito.times(1)).getTrainingLoading()
-        inOrder.verify(userEntity, Mockito.times(1)).getMyTrainingStudyTopic(authRepository.bearerToken!!)
+        inOrder.verify(userWithAuthEntity, Mockito.times(1)).getMyTrainingStudyTopic()
         inOrder.verify(view, Mockito.times(1)).myTrainingFailed(response.message)
         assertTrue(response.code != 100)
         assertTrue(response.message != "OK")
@@ -318,15 +319,15 @@ class LandingPagePresenterTest{
         assertTrue(authRepository.bearerToken?.replace("Bearer ", "")?.isNotEmpty() == true)
 
         Mockito.`when`(
-            userEntity.getMyTrainingStudyTopic(authRepository.bearerToken!!)
+            userWithAuthEntity.getMyTrainingStudyTopic()
         ).thenReturn(Observable.error(throwable))
 
         presenter.getMyTraining()
 
-        val inOrder = inOrder(view, userEntity)
+        val inOrder = inOrder(view, userWithAuthEntity)
 
         inOrder.verify(view, Mockito.times(1)).getTrainingLoading()
-        inOrder.verify(userEntity, Mockito.times(1)).getMyTrainingStudyTopic(authRepository.bearerToken!!)
+        inOrder.verify(userWithAuthEntity, Mockito.times(1)).getMyTrainingStudyTopic()
         inOrder.verify(view, Mockito.times(1)).myTrainingFailed(throwable.message)
     }
 }

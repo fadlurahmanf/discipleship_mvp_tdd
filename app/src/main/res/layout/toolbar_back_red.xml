@@ -9,13 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/red"
-        android:paddingVertical="@dimen/dimen_10dp">
+        android:paddingTop="?actionBarSize"
+        android:paddingBottom="@dimen/dimen_10dp"
+        android:paddingHorizontal="@dimen/dimen_15dp">
 
         <ImageView
             android:id="@+id/ic_left_menu"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginLeft="@dimen/dimen_15dp"
             android:background="@drawable/white_circle"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -42,7 +43,6 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:visibility="invisible"
-            android:layout_marginRight="@dimen/dimen_15dp"
             android:background="@drawable/white_circle"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"

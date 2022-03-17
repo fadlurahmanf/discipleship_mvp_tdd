@@ -3,7 +3,6 @@ package com.fadlurahmanf.starter_app_mvp.ui.home
 import android.content.Intent
 import android.view.View
 import com.fadlurahmanf.starter_app_mvp.BaseApp
-import com.fadlurahmanf.starter_app_mvp.R
 import com.fadlurahmanf.starter_app_mvp.base.BaseMvpActivity
 import com.fadlurahmanf.starter_app_mvp.data.repository.core.AuthRepository
 import com.fadlurahmanf.starter_app_mvp.data.response.auth.LoginResponse
@@ -11,9 +10,12 @@ import com.fadlurahmanf.starter_app_mvp.data.response.auth.MyGroupResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.auth.MyTrainingResponse
 import com.fadlurahmanf.starter_app_mvp.databinding.ActivityLandingPageBinding
 import com.fadlurahmanf.starter_app_mvp.di.component.HomeComponent
+import com.fadlurahmanf.starter_app_mvp.ui.auth.LoginActivity
+import com.fadlurahmanf.starter_app_mvp.ui.guest_mode.GuestModeActivity
 import com.fadlurahmanf.starter_app_mvp.ui.home.adapter.MyGroupAdapter
 import com.fadlurahmanf.starter_app_mvp.ui.home.presenter.LandingPageContract
 import com.fadlurahmanf.starter_app_mvp.ui.home.presenter.LandingPagePresenter
+import com.fadlurahmanf.starter_app_mvp.ui.sidemenu.SettingActivity
 import javax.inject.Inject
 
 class LandingPageActivity : BaseMvpActivity<LandingPagePresenter,ActivityLandingPageBinding>(ActivityLandingPageBinding::inflate),
@@ -32,11 +34,30 @@ class LandingPageActivity : BaseMvpActivity<LandingPagePresenter,ActivityLanding
     }
 
     override fun setup() {
-        supportActionBar?.hide()
-        setScreenStyle(R.color.red, isLight = false)
+        setScreenStyle(isLight = false, isFullScreen = true)
+        initAction()
         initAdapter()
         presenter.getMyGroupAndMySubscription()
         presenter.getMyTraining()
+    }
+
+    private fun initAction() {
+        binding?.navViewLayout?.btnLogin?.setOnClickListener {
+            authRepository.clearAll()
+            val intent = Intent(this, GuestModeActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+            val intent2 = Intent(this, LoginActivity::class.java)
+            startActivity(intent2)
+            finish()
+        }
+
+        binding?.navViewLayout?.llSetting?.setOnClickListener {
+            val intent = Intent(this, SettingActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     private lateinit var adapter:MyGroupAdapter

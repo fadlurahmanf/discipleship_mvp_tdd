@@ -13,6 +13,7 @@ import com.fadlurahmanf.starter_app_mvp.ui.auth.LoginActivity
 import com.fadlurahmanf.starter_app_mvp.ui.guest_mode.adapter.TestimonialAdapter
 import com.fadlurahmanf.starter_app_mvp.ui.guest_mode.presenter.GuestModeContract
 import com.fadlurahmanf.starter_app_mvp.ui.guest_mode.presenter.GuestModePresenter
+import com.fadlurahmanf.starter_app_mvp.ui.sidemenu.SettingActivity
 import javax.inject.Inject
 
 class GuestModeActivity : BaseMvpActivity<GuestModePresenter, ActivityGuestModeBinding>(ActivityGuestModeBinding::inflate),
@@ -45,6 +46,10 @@ class GuestModeActivity : BaseMvpActivity<GuestModePresenter, ActivityGuestModeB
         binding?.floating?.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+        }
+        binding?.navViewLayout?.llSetting?.setOnClickListener {
+            val intent = Intent(this, SettingActivity::class.java)
             startActivity(intent)
         }
     }

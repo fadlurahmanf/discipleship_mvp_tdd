@@ -4,6 +4,7 @@ import android.content.Context
 import com.fadlurahmanf.starter_app_mvp.base.BasePreference
 import com.fadlurahmanf.starter_app_mvp.core.constant.ParamsKeySP
 import com.fadlurahmanf.starter_app_mvp.data.response.core.LanguageResponse
+import com.fadlurahmanf.starter_app_mvp.data.response.core.ParameterLanguageResponse
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -11,15 +12,15 @@ import javax.inject.Singleton
 class AppRepository @Inject constructor(
     context: Context
 ) : BasePreference(context) {
-    var paramsLanguage:String ?= null
+    var paramsLanguage:ParameterLanguageResponse ?= null
     get() {
-        return getString(ParamsKeySP.APP_PARAMS_LANGUAGE)
+        return getData(ParamsKeySP.APP_PARAMS_LANGUAGE, ParameterLanguageResponse::class.java)
     }set(value) {
         if (value == null){
             clearData(ParamsKeySP.APP_PARAMS_LANGUAGE)
             field = null
         }else{
-            saveString(ParamsKeySP.APP_PARAMS_LANGUAGE, value)
+            saveData(ParamsKeySP.APP_PARAMS_LANGUAGE, value)
             field = value
         }
     }

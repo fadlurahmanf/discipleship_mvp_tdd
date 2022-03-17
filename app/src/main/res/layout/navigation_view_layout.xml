@@ -12,6 +12,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/ll_menu_layout"
         android:paddingHorizontal="@dimen/dimen_15dp"
+        android:paddingTop="?actionBarSize"
         android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
@@ -36,6 +37,36 @@
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/black_grey"/>
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ACCOUNT"
+            style="@style/Font.Bold.16"
+            android:layout_marginTop="@dimen/dimen_15dp"
+            android:textColor="@color/medium_grey"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll_setting"
+            android:layout_marginTop="@dimen/dimen_15dp">
+            <ImageView
+                android:layout_width="@dimen/dimen_35dp"
+                android:layout_height="@dimen/dimen_35dp"
+                android:src="@drawable/ic_setting"
+                android:tint="@color/grey"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Settings"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                style="@style/Font.Regular.16"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/black_grey"/>
+        </LinearLayout>
+
 
         <android.widget.Button
             android:layout_width="wrap_content"

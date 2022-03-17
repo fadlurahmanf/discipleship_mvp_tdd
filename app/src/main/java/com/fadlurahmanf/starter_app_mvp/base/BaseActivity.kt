@@ -1,13 +1,17 @@
 package com.fadlurahmanf.starter_app_mvp.base
 
+import android.app.Dialog
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.view.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.viewbinding.ViewBinding
 import com.fadlurahmanf.starter_app_mvp.BaseApp
@@ -18,6 +22,7 @@ import com.fadlurahmanf.starter_app_mvp.ui.core.SplashActivity
 import com.fadlurahmanf.starter_app_mvp.ui.core.dialog.ConfirmDialog
 import com.fadlurahmanf.starter_app_mvp.ui.core.dialog.LoadingDialog
 import com.fadlurahmanf.starter_app_mvp.ui.core.dialog.OkDialog
+import com.fadlurahmanf.starter_app_mvp.ui.core.dialog.TransparentDialog
 import com.google.android.material.snackbar.Snackbar
 
 typealias InflateLayoutActivity<T> = (LayoutInflater) -> T
@@ -50,14 +55,25 @@ abstract class BaseActivity<VB:ViewBinding>(
         startConnectivityReceiver()
     }
 
-    open fun setScreenStyle(color:Int, isLight:Boolean = true){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+    open fun setScreenStyle(color:Int = R.color.white, isLight:Boolean = true, isFullScreen:Boolean=false){
+        if (isFullScreen){
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                window.statusBarColor = Color.TRANSPARENT
+            }
+            val window = this.window
+            val decorView = window.decorView
+            val wic = WindowInsetsControllerCompat(window, decorView)
+            wic.isAppearanceLightStatusBars = isLight
+        }
+
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val window = this.window
             val decorView = window.decorView
             val wic = WindowInsetsControllerCompat(window, decorView)
             wic.isAppearanceLightStatusBars = isLight
             window.statusBarColor = ContextCompat.getColor(this, color)
-        }
+        }*/
     }
 
     fun setTransparentStatusBar(){
@@ -111,6 +127,7 @@ abstract class BaseActivity<VB:ViewBinding>(
         if (connectivityReceiver==null){
             connectivityReceiver = ConnectivityReceiver()
             connectivityReceiver?.connectivityListener = this
+            @Suppress("DEPRECATION")
             registerReceiver(connectivityReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
         }
     }
@@ -205,12 +222,12 @@ abstract class BaseActivity<VB:ViewBinding>(
     }
 
     private var loadingDialog:LoadingDialog ?= null
-    override fun loadingDialog(loadingText:String?, isCancelable:Boolean?) {
+    override fun loadingDialog(loadingText:String?, isCancelable:Boolean) {
         if (loadingDialog == null){
             loadingDialog = LoadingDialog()
             var bundle = Bundle()
             bundle.putString(LoadingDialog.TEXT, loadingText)
-            bundle.putBoolean(LoadingDialog.IS_CANCELABLE, isCancelable?:false)
+            bundle.putBoolean(LoadingDialog.IS_CANCELABLE, isCancelable)
             loadingDialog?.arguments = bundle
             loadingDialog?.show(supportFragmentManager, LoadingDialog::class.java.simpleName)
         }
@@ -220,6 +237,26 @@ abstract class BaseActivity<VB:ViewBinding>(
         if (loadingDialog != null){
             loadingDialog?.dismiss()
             loadingDialog = null
+        }
+    }
+
+    private var transparentDialog:TransparentDialog ?= null
+    fun showTransparentDialog(
+        isCancelable: Boolean = false
+    ){
+        if (transparentDialog == null){
+            var bundle = Bundle()
+            transparentDialog = TransparentDialog()
+            bundle.putBoolean(TransparentDialog.IS_CANCELABLE, isCancelable)
+            transparentDialog?.arguments = bundle
+            transparentDialog?.show(supportFragmentManager, TransparentDialog::class.java.simpleName)
+        }
+    }
+
+    fun dismissTransparentDialog(){
+        if (transparentDialog != null){
+            transparentDialog?.dismiss()
+            transparentDialog = null
         }
     }
 }

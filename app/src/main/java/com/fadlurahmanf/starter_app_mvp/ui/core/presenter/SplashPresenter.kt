@@ -10,6 +10,7 @@ import com.fadlurahmanf.starter_app_mvp.data.repository.core.AuthRepository
 import com.fadlurahmanf.starter_app_mvp.data.response.core.BaseResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.core.CheckUpdateResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.core.LanguageResponse
+import com.fadlurahmanf.starter_app_mvp.data.response.core.ParameterLanguageResponse
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.functions.BiFunction
@@ -75,7 +76,9 @@ class SplashPresenter @Inject constructor(
                 .subscribe(
                     {
                         if (it.updateResponse?.code == 100 && it.languageResponse?.code == 100 && it.languageResponse!!.data != null && it.updateResponse!!.data != null){
-                            appRepository.paramsLanguage = "en"
+                            appRepository.paramsLanguage = ParameterLanguageResponse(
+                                name = "English", code = "en"
+                            )
                             appRepository.languageResponse = it.languageResponse!!.data
                             if (authRepository.isLoggedIn == true){
                                 view?.goToLandingPage(it.updateResponse!!.data!!)
@@ -85,7 +88,9 @@ class SplashPresenter @Inject constructor(
                         }else if (it.updateResponse?.code == 100 && it.languageResponse?.code!=100){
                             view?.forceRestart(it.languageResponse?.message)
                         }else if (it.updateResponse?.code != 100 && it.languageResponse?.code == 100){
-                            appRepository.paramsLanguage = "en"
+                            appRepository.paramsLanguage = ParameterLanguageResponse(
+                                name = "English", code = "en"
+                            )
                             appRepository.languageResponse = it.languageResponse!!.data
                             view?.goToGuestMode(CheckUpdateResponse())
                         }else{

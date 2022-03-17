@@ -14,6 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Starter_app_mvp">
+        <activity android:name=".ui.sidemenu.language.SelectLanguageActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".ui.sidemenu.SettingActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.sidemenu.mynotes.BibleVerseActivity"
             android:exported="false" />
@@ -32,7 +37,9 @@
         <activity
             android:name=".ui.home.WaitlistActivity"
             android:exported="false" />
-        <activity android:name=".ui.home.LandingPageActivity" />
+        <activity
+            android:name=".ui.home.LandingPageActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".ui.auth.LoginActivity" />
         <activity android:name=".ui.guest_mode.GuestModeActivity" />
         <activity android:name=".ui.example.FragmentActivity" />

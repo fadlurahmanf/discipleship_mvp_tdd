@@ -25,10 +25,12 @@ class LoginPresenter @Inject constructor(
                             authRepository.loginResponse = it.data
                             view?.loginSuccess(it.data!!)
                         }else{
+                            view?.dismissLoadingDialog()
                             view?.loginFailed(it.message)
                         }
                     },
                     {
+                        view?.dismissLoadingDialog()
                         view?.loginFailed(it.message)
                     },
                     {}

@@ -13,4 +13,6 @@ class LanguageEntity @Inject constructor(
     }
 
     fun getLanguage(lang:String) = networkService(30).getLanguage(lang)
+
+    fun getParameterLanguage() = networkService(30).getAllParameterLanguage()
 }

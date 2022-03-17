@@ -94,4 +94,12 @@ class AuthRepository @Inject constructor(context: Context):BasePreference(contex
     get() {
         return bearerToken != null && loginResponse != null && password != null
     }
+
+    fun clearAll(){
+        bearerToken = null
+        password = null
+        loginResponse = null
+        groupChosen = null
+        mySubscription = null
+    }
 }

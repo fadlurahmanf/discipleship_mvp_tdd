@@ -1,6 +1,7 @@
 package com.fadlurahmanf.starter_app_mvp.data.repository.core
 
 import com.fadlurahmanf.starter_app_mvp.data.response.core.LanguageResponse
+import com.fadlurahmanf.starter_app_mvp.data.response.core.ParameterLanguageResponse
 import com.github.ivanshafran.sharedpreferencesmock.SPMockBuilder
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -21,8 +22,11 @@ class AppRepositoryTest{
 
     @Test
     fun `params_language_return_true_value`(){
-        appRepository.paramsLanguage = "SOMETHING"
-        assertEquals("SOMETHING", appRepository.paramsLanguage)
+        appRepository.paramsLanguage = ParameterLanguageResponse(
+            name = "English", code = "en"
+        )
+        assertEquals("English", appRepository.paramsLanguage!!.name)
+        assertEquals("en", appRepository.paramsLanguage!!.code)
     }
 
     @Test

@@ -10,6 +10,7 @@ import com.fadlurahmanf.starter_app_mvp.data.response.auth.LoginResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.core.BaseResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.core.CheckUpdateResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.core.LanguageResponse
+import com.fadlurahmanf.starter_app_mvp.data.response.core.ParameterLanguageResponse
 import com.fadlurahmanf.starter_app_mvp.ui.core.presenter.SplashContract
 import com.fadlurahmanf.starter_app_mvp.ui.core.presenter.SplashPresenter
 import com.github.ivanshafran.sharedpreferencesmock.SPMockBuilder
@@ -89,9 +90,11 @@ class SplashPresenterTest{
 
         inOrder.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
         inOrder.verify(languageEntity, Mockito.times(1)).getLanguage("en")
-        inOrder.verify(presenter.appRepository, Mockito.times(1)).paramsLanguage = "en"
+        inOrder.verify(presenter.appRepository, Mockito.times(1)).paramsLanguage = ParameterLanguageResponse(
+            name = "English", code = "en"
+        )
         inOrder.verify(presenter.appRepository, Mockito.times(1)).languageResponse = languageResponse.data
-        assertEquals("en", presenter.appRepository.paramsLanguage)
+        assertEquals("en", presenter.appRepository.paramsLanguage!!.code)
         assertEquals(languageResponse.data, presenter.appRepository.languageResponse)
         inOrder.verify(view, Mockito.times(1)).goToGuestMode(updateResponse.data!!)
 
@@ -125,7 +128,9 @@ class SplashPresenterTest{
 
         inOrder.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
         inOrder.verify(languageEntity, Mockito.times(1)).getLanguage("en")
-        inOrder.verify(presenter.appRepository, Mockito.never()).paramsLanguage = "en"
+        inOrder.verify(presenter.appRepository, Mockito.never()).paramsLanguage = ParameterLanguageResponse(
+            name = "English", code = "en"
+        )
         inOrder.verify(presenter.appRepository, Mockito.never()).languageResponse = languageResponse.data
 
         inOrder.verify(view, Mockito.times(1)).forceRestart(languageResponse.message)
@@ -186,9 +191,11 @@ class SplashPresenterTest{
 
         inOrder.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
         inOrder.verify(languageEntity, Mockito.times(1)).getLanguage("en")
-        inOrder.verify(presenter.appRepository, Mockito.times(1)).paramsLanguage = "en"
+        inOrder.verify(presenter.appRepository, Mockito.times(1)).paramsLanguage = ParameterLanguageResponse(
+            name = "English", code = "en"
+        )
         inOrder.verify(presenter.appRepository, Mockito.times(1)).languageResponse = languageResponse.data
-        assertEquals("en", presenter.appRepository.paramsLanguage)
+        assertEquals("en", presenter.appRepository.paramsLanguage!!.code)
         assertEquals(languageResponse.data, presenter.appRepository.languageResponse)
         inOrder.verify(view, Mockito.times(1)).goToGuestMode(CheckUpdateResponse())
 
@@ -221,9 +228,11 @@ class SplashPresenterTest{
 
         inOrder.verify(checkUpdateEntity, Mockito.times(1)).checkUpdate(checkUpdateBody)
         inOrder.verify(languageEntity, Mockito.times(1)).getLanguage("en")
-        inOrder.verify(presenter.appRepository, Mockito.times(1)).paramsLanguage = "en"
+        inOrder.verify(presenter.appRepository, Mockito.times(1)).paramsLanguage = ParameterLanguageResponse(
+            name = "English", code = "en"
+        )
         inOrder.verify(presenter.appRepository, Mockito.times(1)).languageResponse = languageResponse.data
-        assertEquals("en", presenter.appRepository.paramsLanguage)
+        assertEquals("en", presenter.appRepository.paramsLanguage!!.code)
         assertEquals(languageResponse.data, presenter.appRepository.languageResponse)
         inOrder.verify(view, Mockito.times(1)).goToGuestMode(CheckUpdateResponse())
 
@@ -236,7 +245,9 @@ class SplashPresenterTest{
         var checkUpdateBody = CheckUpdateBody(type = "app", version = BuildConfig.VERSION_NAME, os = "android")
         var updateResponse = BaseResponse<CheckUpdateResponse>(code = 100, message = "OK", CheckUpdateResponse())
 
-        presenter.appRepository.paramsLanguage = ""
+        presenter.appRepository.paramsLanguage = ParameterLanguageResponse(
+            name = "English", code = "en"
+        )
         presenter.appRepository.languageResponse = LanguageResponse()
 
         Mockito.`when`(checkUpdateEntity.checkUpdate(checkUpdateBody)).thenReturn(Observable.just(updateResponse))
@@ -261,7 +272,9 @@ class SplashPresenterTest{
         var checkUpdateBody = CheckUpdateBody(type = "app", version = BuildConfig.VERSION_NAME, os = "android")
         var updateResponse = BaseResponse<CheckUpdateResponse>()
 
-        presenter.appRepository.paramsLanguage = ""
+        presenter.appRepository.paramsLanguage = ParameterLanguageResponse(
+            name = "English", code = "en"
+        )
         presenter.appRepository.languageResponse = LanguageResponse()
 
         Mockito.`when`(checkUpdateEntity.checkUpdate(checkUpdateBody)).thenReturn(Observable.just(updateResponse))
@@ -285,7 +298,9 @@ class SplashPresenterTest{
         var checkUpdateBody = CheckUpdateBody(type = "app", version = BuildConfig.VERSION_NAME, os = "android")
         var updateResponse = BaseResponse<CheckUpdateResponse>(code = 100, message = "OK", CheckUpdateResponse())
 
-        presenter.appRepository.paramsLanguage = ""
+        presenter.appRepository.paramsLanguage = ParameterLanguageResponse(
+            name = "English", code = "en"
+        )
         presenter.appRepository.languageResponse = LanguageResponse()
         presenter.authRepository.bearerToken = ""
         presenter.authRepository.password = ""
@@ -314,7 +329,9 @@ class SplashPresenterTest{
         var checkUpdateBody = CheckUpdateBody(type = "app", version = BuildConfig.VERSION_NAME, os = "android")
         var updateResponse = BaseResponse<CheckUpdateResponse>()
 
-        presenter.appRepository.paramsLanguage = ""
+        presenter.appRepository.paramsLanguage = ParameterLanguageResponse(
+            name = "English", code = "en"
+        )
         presenter.appRepository.languageResponse = LanguageResponse()
         presenter.authRepository.bearerToken = ""
         presenter.authRepository.password = ""

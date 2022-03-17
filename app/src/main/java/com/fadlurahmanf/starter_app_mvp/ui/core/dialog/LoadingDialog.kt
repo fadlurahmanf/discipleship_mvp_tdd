@@ -17,10 +17,10 @@ class LoadingDialog:BaseDialog<DialogLoadingBinding>(DialogLoadingBinding::infla
         var argument = this.arguments
 
         var loadingText = argument?.getString(TEXT, "Loading...")
-        var isCancelable = argument?.getBoolean(IS_CANCELABLE)
+        var isCancelable:Boolean = argument?.getBoolean(IS_CANCELABLE)?:false
 
         binding?.tvContent?.text = loadingText
-        dialog?.setCanceledOnTouchOutside(isCancelable?:false)
+        dialog?.setCancelable(isCancelable)
     }
 
     override fun injectView() {}
