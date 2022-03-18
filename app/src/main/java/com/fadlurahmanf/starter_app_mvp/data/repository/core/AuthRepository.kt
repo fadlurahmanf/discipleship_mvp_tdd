@@ -5,7 +5,7 @@ import com.fadlurahmanf.starter_app_mvp.base.BasePreference
 import com.fadlurahmanf.starter_app_mvp.core.constant.ParamsKeySP
 import com.fadlurahmanf.starter_app_mvp.data.response.auth.LoginResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.auth.MyGroupResponse
-import java.util.ArrayList
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -86,6 +86,18 @@ class AuthRepository @Inject constructor(context: Context):BasePreference(contex
             field = null
         }else{
             saveListData(ParamsKeySP.MY_SUBSCRIPTION, value)
+            field = value
+        }
+    }
+
+    var assignmentReminderTime:Date ?= null
+    get() = getData(ParamsKeySP.ASSIGNMENT_REMINDER_TIME, Date::class.java)
+    set(value){
+        if (value == null){
+            clearData(ParamsKeySP.ASSIGNMENT_REMINDER_TIME)
+            field = null
+        }else{
+            saveData(ParamsKeySP.ASSIGNMENT_REMINDER_TIME, value)
             field = value
         }
     }

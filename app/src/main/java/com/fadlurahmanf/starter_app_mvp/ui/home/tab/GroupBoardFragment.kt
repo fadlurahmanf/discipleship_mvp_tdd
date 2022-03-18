@@ -48,7 +48,6 @@ class GroupBoardFragment : BaseMvpFragment<FragmentGroupBoardBinding, GroupBoard
             presenter.getAllPost()
         }
 
-
         (requireActivity() as MainActivity).binding?.navViewLayout?.btnLogin?.setOnClickListener {
             val intent1 = Intent(this.requireActivity(), GuestModeActivity::class.java)
             intent1.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

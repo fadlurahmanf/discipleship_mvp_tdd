@@ -13,7 +13,9 @@
     <color name="dark_green">#FF009347</color>
     <color name="grey">#FFE0E3E4</color>
     <color name="grey2">#FFC2C4C7</color>
+    <color name="light_grey">#FFF0F1F2</color>
     <color name="light_grey2">#FFF4F5F5</color>
+    <color name="light_grey3">#FFE9E9EA</color>
     <color name="dark_grey">#FF57585B</color>
     <color name="medium_grey">#FF919297</color>
     <color name="black_grey">#FF333333</color>
@@ -21,4 +23,5 @@
     <color name="cream">#FFF6F1E6</color>
     <color name="shimmerColor">#C2C2C2</color>
     <color name="light_red">#FFFFDDD9</color>
+    <color name="green">#FF65C466</color>
 </resources>

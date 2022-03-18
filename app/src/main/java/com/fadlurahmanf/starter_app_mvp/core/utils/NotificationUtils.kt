@@ -8,7 +8,9 @@ import androidx.core.app.NotificationCompat
 import com.fadlurahmanf.starter_app_mvp.R
 import com.fadlurahmanf.starter_app_mvp.data.model.example.NotificationData
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class NotificationUtils @Inject constructor(var context: Context) {
 
     companion object{
@@ -20,29 +22,43 @@ class NotificationUtils @Inject constructor(var context: Context) {
 
 
     private fun buildNotification(data: NotificationData){
-        notificationBuilder = NotificationCompat.Builder(context.applicationContext, data.channelId?:"DEFAULT_CHANNEL_ID")
+        notificationBuilder = NotificationCompat.Builder(context.applicationContext, data.channelName)
             .setSmallIcon(R.drawable.ic_discipleship)
-            .setContentTitle(data.title)
-            .setContentText(data.content)
-            .setStyle(NotificationCompat.BigTextStyle()
-                .bigText(data.content))
+            .setContentTitle(data.notificationTitle)
+            .setContentText(data.notificationContent)
             .setContentIntent(data.pendingIntent)
-            .setPriority(data.priority)
-        
+            .setPriority(data.notificationPriority)
+    }
+
+    private fun createNotificationChannel(data: NotificationData){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val channelName = data.channelName
+            val channelId = data.channelId
+            val channelDescription = data.channelName
+            val importance = data.channelImportance ?: NotificationManager.IMPORTANCE_DEFAULT
+            var channel = NotificationChannel(channelName, channelId, importance).apply {
+                description = channelDescription
+            }
+            notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 
     fun showNotification(data: NotificationData){
+        createNotificationChannel(data)
         buildNotification(data)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(data.channelId,
-                data.channelId,
-                NotificationManager.IMPORTANCE_HIGH,
-            )
-            notificationManager.createNotificationChannel(channel)
-            notificationBuilder.setChannelId(data.channelId)
-        }
-        notificationManager.notify(0, notificationBuilder.build())
+        notificationManager.notify(data.notificationId, notificationBuilder.build())
+//        buildNotification(data)
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            val channel = NotificationChannel(data.channelId,
+//                data.channelId,
+//                NotificationManager.IMPORTANCE_HIGH,
+//            )
+//            notificationManager.createNotificationChannel(channel)
+//            notificationBuilder.setChannelId(data.channelId)
+//        }
+//        notificationManager.notify(0, notificationBuilder.build())
     }
 
 }

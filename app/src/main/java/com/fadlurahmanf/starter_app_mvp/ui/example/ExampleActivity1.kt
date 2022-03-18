@@ -64,16 +64,16 @@ class ExampleActivity1 : BaseMvpActivity<ExampleActivity1Presenter, ActivityExam
         binding?.button3?.setOnClickListener {
             var intent = Intent(this, SplashActivity::class.java)
             var pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
-            notificationUtils.showNotification(
-                NotificationData(
-                    "CHANNEL_ID",
-                    Random().nextInt(100),
-                    pendingIntent,
-                    content = "HALO CONTENT HALO CONTENT HALO CONTENT HALO CONTENT HALO CONTENT ",
-                    title = "HALO TITLE",
-                    priority = NotificationCompat.PRIORITY_MAX
-                )
-            )
+//            notificationUtils.showNotification(
+//                NotificationData(
+//                    "CHANNEL_ID",
+//                    Random().nextInt(100),
+//                    pendingIntent,
+//                    notificationContent = "HALO CONTENT HALO CONTENT HALO CONTENT HALO CONTENT HALO CONTENT ",
+//                    notificationTitle = "HALO TITLE",
+//                    priority = NotificationCompat.PRIORITY_MAX
+//                )
+//            )
         }
 
         binding?.button4?.setOnClickListener {

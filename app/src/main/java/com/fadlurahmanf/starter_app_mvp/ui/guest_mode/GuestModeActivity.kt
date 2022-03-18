@@ -3,9 +3,11 @@ package com.fadlurahmanf.starter_app_mvp.ui.guest_mode
 import android.content.Intent
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
 import com.fadlurahmanf.starter_app_mvp.BaseApp
 import com.fadlurahmanf.starter_app_mvp.R
 import com.fadlurahmanf.starter_app_mvp.base.BaseMvpActivity
+import com.fadlurahmanf.starter_app_mvp.data.repository.core.AppRepository
 import com.fadlurahmanf.starter_app_mvp.data.response.core.TestimonialResponse
 import com.fadlurahmanf.starter_app_mvp.databinding.ActivityGuestModeBinding
 import com.fadlurahmanf.starter_app_mvp.di.component.CoreComponent
@@ -13,6 +15,7 @@ import com.fadlurahmanf.starter_app_mvp.ui.auth.LoginActivity
 import com.fadlurahmanf.starter_app_mvp.ui.guest_mode.adapter.TestimonialAdapter
 import com.fadlurahmanf.starter_app_mvp.ui.guest_mode.presenter.GuestModeContract
 import com.fadlurahmanf.starter_app_mvp.ui.guest_mode.presenter.GuestModePresenter
+import com.fadlurahmanf.starter_app_mvp.ui.home.BaseDrawer
 import com.fadlurahmanf.starter_app_mvp.ui.sidemenu.SettingActivity
 import javax.inject.Inject
 
@@ -34,12 +37,34 @@ class GuestModeActivity : BaseMvpActivity<GuestModePresenter, ActivityGuestModeB
     }
 
     override fun setup() {
-        setScreenStyle(R.color.white, true)
+        setScreenStyle(R.color.white, true, isFullScreen = true)
         supportActionBar?.hide()
         binding?.toolbar?.ivToolbar?.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_menu_red))
         binding?.toolbar?.ivToolbar?.setBackgroundResource(R.color.white)
         presenter.getTestimonial()
         initAction()
+        initText()
+    }
+
+    @Inject
+    lateinit var appRepository: AppRepository
+
+    override fun setText() {
+        super.setText()
+        initText()
+    }
+
+    override fun onBackPressed() {
+        if (binding?.drawerLayout?.isDrawerOpen(GravityCompat.START) == true){
+            BaseDrawer.openCloseDrawer(binding?.drawerLayout)
+        }else{
+            super.onBackPressed()
+        }
+    }
+
+    private fun initText() {
+        binding?.tvBrowse?.text = appRepository.languageResponse?.guest?.guestHomeBrowseStudy
+        binding?.tvStudy?.text = appRepository.languageResponse?.guest?.guestHomeBrowseStudy
     }
 
     private fun initAction() {

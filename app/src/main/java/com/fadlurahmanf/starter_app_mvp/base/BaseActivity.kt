@@ -16,7 +16,9 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.viewbinding.ViewBinding
 import com.fadlurahmanf.starter_app_mvp.BaseApp
 import com.fadlurahmanf.starter_app_mvp.R
+import com.fadlurahmanf.starter_app_mvp.core.event.ChangeText
 import com.fadlurahmanf.starter_app_mvp.core.services.ConnectivityReceiver
+import com.fadlurahmanf.starter_app_mvp.core.utils.RxBus
 import com.fadlurahmanf.starter_app_mvp.di.component.ApplicationComponent
 import com.fadlurahmanf.starter_app_mvp.ui.core.SplashActivity
 import com.fadlurahmanf.starter_app_mvp.ui.core.dialog.ConfirmDialog
@@ -43,6 +45,7 @@ abstract class BaseActivity<VB:ViewBinding>(
         super.onCreate(savedInstanceState)
         setLayout()
         internalSetup()
+        listenChangeLanguage()
         setup()
     }
 
@@ -259,4 +262,12 @@ abstract class BaseActivity<VB:ViewBinding>(
             transparentDialog = null
         }
     }
+
+    private fun listenChangeLanguage(){
+        RxBus.listen(ChangeText::class.java).subscribe {
+            setText()
+        }
+    }
+
+    open fun setText(){}
 }

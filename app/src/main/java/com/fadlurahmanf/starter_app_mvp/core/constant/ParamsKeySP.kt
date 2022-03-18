@@ -25,5 +25,6 @@ object ParamsKeySP {
     const val BEARER_TOKEN = "BEARER_TOKEN"
     const val MY_GROUP = "MY_GROUP"
     const val MY_SUBSCRIPTION = "MY_SUBSCRIPTION"
+    const val ASSIGNMENT_REMINDER_TIME = "ASSIGNMENT_REMINDER_TIME"
 
 }
