@@ -5,7 +5,7 @@ import com.fadlurahmanf.starter_app_mvp.ui.guest_mode.GuestModeActivity
 import dagger.Subcomponent
 import javax.inject.Singleton
 
-@Singleton
+//@Singleton
 @Subcomponent
 interface CoreComponent {
 

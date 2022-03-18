@@ -8,7 +8,7 @@ import com.fadlurahmanf.starter_app_mvp.ui.home.tab.PrayerRequestFragment
 import dagger.Subcomponent
 import javax.inject.Singleton
 
-@Singleton
+//@Singleton
 @Subcomponent
 interface HomeComponent {
 

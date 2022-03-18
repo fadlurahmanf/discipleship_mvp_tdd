@@ -16,7 +16,6 @@ class ExceptionInterceptor:Interceptor {
             var response = chain.proceed(request)
             var responseBody = response.peekBody(Long.MAX_VALUE).string()
             var jsonResponse = JSONObject(responseBody)
-            println("MASUK ${jsonResponse}")
             if (jsonResponse.optInt("code") == 999){
                 throw IOException("Connection Lost. Please try again later")
             }else{

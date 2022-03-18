@@ -48,6 +48,7 @@ class LandingPageActivity : BaseMvpActivity<LandingPagePresenter,ActivityLanding
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
             finish()
+
             val intent2 = Intent(this, LoginActivity::class.java)
             startActivity(intent2)
             finish()
@@ -56,7 +57,6 @@ class LandingPageActivity : BaseMvpActivity<LandingPagePresenter,ActivityLanding
         binding?.navViewLayout?.llSetting?.setOnClickListener {
             val intent = Intent(this, SettingActivity::class.java)
             startActivity(intent)
-            finish()
         }
     }
 

@@ -6,7 +6,7 @@ import com.fadlurahmanf.starter_app_mvp.ui.auth.ResetPasswordActivity
 import dagger.Subcomponent
 import javax.inject.Singleton
 
-@Singleton
+//@Singleton
 @Subcomponent
 interface AuthComponent {
 

@@ -1,11 +1,22 @@
 package com.fadlurahmanf.starter_app_mvp.ui.sidemenu
 
+import android.app.AlarmManager
 import android.app.Dialog
+import android.app.PendingIntent
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.fadlurahmanf.starter_app_mvp.R
 import com.fadlurahmanf.starter_app_mvp.base.BaseActivity
 import com.fadlurahmanf.starter_app_mvp.core.event.ChangeText
@@ -16,10 +27,12 @@ import com.fadlurahmanf.starter_app_mvp.data.repository.core.AppRepository
 import com.fadlurahmanf.starter_app_mvp.data.repository.core.AuthRepository
 import com.fadlurahmanf.starter_app_mvp.databinding.ActivitySettingBinding
 import com.fadlurahmanf.starter_app_mvp.di.component.SideMenuComponent
+import com.fadlurahmanf.starter_app_mvp.ui.core.worker.AlarmWorker
 import com.fadlurahmanf.starter_app_mvp.ui.sidemenu.language.SelectLanguageActivity
 import com.fadlurahmanf.starter_app_mvp.ui.sidemenu.widget.AlarmTimePickerDialog
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -33,6 +46,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(ActivitySettingBind
         component.inject(this)
     }
 
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun setup() {
         supportActionBar?.hide()
         setScreenStyle(isFullScreen = true)
@@ -55,17 +69,49 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(ActivitySettingBind
 
     private var alarmTimePickerDialog:AlarmTimePickerDialog ?= null
 
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun initAction() {
         binding?.layoutLanguage?.clSetting?.setOnClickListener {
-            val intent = Intent(this, SelectLanguageActivity::class.java)
-            startActivity(intent)
+//            val intent = Intent(this, SelectLanguageActivity::class.java)
+//            startActivity(intent)
+
+            var alarmManager = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val intent = Intent(this, AlarmReceiver::class.java)
+            val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
+            alarmManager.cancel(pendingIntent)
         }
 
+
         binding?.toolbar?.tvTitle?.setOnClickListener {
-            notificationUtils.showNotification(NotificationData(
-                notificationTitle = Random.nextInt(999).toString(),
-                notificationContent = Random.nextInt(999).toString()
-            ))
+//            notificationUtils.showNotification(NotificationData(
+//                notificationTitle = Random.nextInt(999).toString(),
+//                notificationContent = Random.nextInt(999).toString()
+//            ))
+//            var alarmManager = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//            val intent = Intent(this, AlarmReceiver::class.java)
+//            val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
+//            alarmManager.cancel(pendingIntent)
+//            var calendar = Calendar.getInstance().apply {
+//                set(Calendar.DAY_OF_MONTH, 18)
+//                set(Calendar.HOUR_OF_DAY, 16)
+//                set(Calendar.MINUTE, 57)
+//                set(Calendar.SECOND, 0)
+//            }
+//            println("SET ALARM AT  ${calendar.time}")
+//
+//            alarmManager.setInexactRepeating(
+//                AlarmManager.RTC_WAKEUP,
+//                calendar.timeInMillis,
+//                1000 * 15,
+//                pendingIntent
+//            )
+
+            var periodic = PeriodicWorkRequestBuilder<AlarmWorker>(1, TimeUnit.MINUTES)
+                .build()
+            println("MASUK ${periodic.id}")
+            WorkManager.getInstance(this).enqueue(periodic)
+            observeWork(periodic.id)
+
         }
 
         binding?.layoutReminder?.ivSwitch?.setOnClickListener {
@@ -79,8 +125,17 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(ActivitySettingBind
                 binding?.clManageReminder?.visibility = View.GONE
             }
         }
+
         binding?.clManageReminder?.setOnClickListener {
             showAlarmTimePickerDialog()
+        }
+    }
+
+    fun observeWork(id:UUID){
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(id).observe(this) {
+            if (it.state == WorkInfo.State.SUCCEEDED){
+                println("MASUK")
+            }
         }
     }
 
@@ -139,5 +194,11 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(ActivitySettingBind
         super.setText()
         initText()
     }
+}
 
+class AlarmReceiver:BroadcastReceiver(){
+    override fun onReceive(context: Context?, intent: Intent?) {
+        var ins = Intent("com.alarm.receiver")
+        println("MASUK ON RECEIVE ${Calendar.getInstance().time}")
+    }
 }
