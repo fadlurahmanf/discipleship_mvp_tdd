@@ -10,6 +10,7 @@ import com.fadlurahmanf.starter_app_mvp.databinding.ActivityMainBinding
 import com.fadlurahmanf.starter_app_mvp.di.component.HomeComponent
 import com.fadlurahmanf.starter_app_mvp.ui.home.tab.GroupBoardFragment
 import com.fadlurahmanf.starter_app_mvp.ui.home.tab.PrayerRequestFragment
+import com.fadlurahmanf.starter_app_mvp.ui.home.tab.StudyGroupFragment
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
     private lateinit var component:HomeComponent
@@ -37,6 +38,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 addFragment(2)
             }
         }
+        binding?.llStudyGroup?.setOnClickListener {
+            if (currentIndexFragment != 3){
+                addFragment(3)
+            }
+        }
     }
 
     fun openCloseDrawer(){
@@ -59,6 +65,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
                 binding?.tvRequest?.setTextColor(ContextCompat.getColor(this, R.color.red))
                 beginTransaction.replace(R.id.fl, PrayerRequestFragment())
+            }
+            3 -> {
+               currentIndexFragment = 3
+               refreshStyleBottomNavBar()
+               binding?.ivStudyGroup?.setImageResource(R.drawable.ic_study_group_active)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    binding?.tvStudyGroup?.setTextAppearance(R.style.Font_Bold_12)
+                }
+                binding?.tvStudyGroup?.setTextColor(ContextCompat.getColor(this, R.color.red))
+                beginTransaction.replace(R.id.fl, StudyGroupFragment())
             }
             0 -> {
                 currentIndexFragment = 0

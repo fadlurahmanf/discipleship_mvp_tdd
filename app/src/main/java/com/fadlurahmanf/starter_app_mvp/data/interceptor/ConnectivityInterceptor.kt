@@ -16,13 +16,18 @@ class ConnectivityInterceptor @Inject constructor(
     private var context: Context
 ):Interceptor {
 
-    @RequiresApi(Build.VERSION_CODES.M)
+
     private fun isConnectedInternet():Boolean{
         val cm:ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        var capabilities = cm.getNetworkCapabilities(cm.activeNetwork)
-        return (capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) == true
-                || capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true
-                || capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) == true)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                var capabilities = cm.getNetworkCapabilities(cm.activeNetwork)
+                return (capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) == true
+                        || capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true
+                        || capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) == true)
+            }
+        }
+        return false
     }
 
     @RequiresApi(Build.VERSION_CODES.M)

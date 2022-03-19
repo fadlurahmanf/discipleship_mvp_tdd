@@ -26,7 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/cl_bottom_nav_bar"
-            android:paddingVertical="@dimen/dimen_10dp"
+            android:paddingBottom="?actionBarSize"
+            android:paddingTop="@dimen/dimen_10dp"
             android:paddingHorizontal="@dimen/dimen_5dp"
             app:layout_constraintBottom_toBottomOf="parent">
             <LinearLayout
@@ -113,10 +114,12 @@
                 <ImageView
                     android:layout_width="@dimen/dimen_28dp"
                     android:layout_height="@dimen/dimen_28dp"
+                    android:id="@+id/iv_study_group"
                     android:src="@drawable/ic_study_group_inactive"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dimen_40dp"
+                    android:id="@+id/tv_study_group"
                     android:text="Study Group"
                     android:gravity="center"
                     style="@style/Font.Regular.12"

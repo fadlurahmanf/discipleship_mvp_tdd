@@ -5,6 +5,7 @@ import com.fadlurahmanf.starter_app_mvp.ui.home.MainActivity
 import com.fadlurahmanf.starter_app_mvp.ui.home.WaitlistActivity
 import com.fadlurahmanf.starter_app_mvp.ui.home.tab.GroupBoardFragment
 import com.fadlurahmanf.starter_app_mvp.ui.home.tab.PrayerRequestFragment
+import com.fadlurahmanf.starter_app_mvp.ui.home.tab.StudyGroupFragment
 import dagger.Subcomponent
 import javax.inject.Singleton
 
@@ -22,4 +23,5 @@ interface HomeComponent {
     fun inject(activity:MainActivity)
     fun inject(fragment:GroupBoardFragment)
     fun inject(fragment:PrayerRequestFragment)
+    fun inject(fragment:StudyGroupFragment)
 }

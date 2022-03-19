@@ -17,6 +17,7 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import com.fadlurahmanf.starter_app_mvp.BaseApp
 import com.fadlurahmanf.starter_app_mvp.R
 import com.fadlurahmanf.starter_app_mvp.base.BaseActivity
 import com.fadlurahmanf.starter_app_mvp.core.event.ChangeText
@@ -46,7 +47,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(ActivitySettingBind
         component.inject(this)
     }
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
+
     override fun setup() {
         supportActionBar?.hide()
         setScreenStyle(isFullScreen = true)
@@ -69,7 +70,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(ActivitySettingBind
 
     private var alarmTimePickerDialog:AlarmTimePickerDialog ?= null
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun initAction() {
         binding?.layoutLanguage?.clSetting?.setOnClickListener {
 //            val intent = Intent(this, SelectLanguageActivity::class.java)
@@ -77,7 +78,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(ActivitySettingBind
 
             var alarmManager = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val intent = Intent(this, AlarmReceiver::class.java)
-            val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
+            val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
             alarmManager.cancel(pendingIntent)
         }
 
@@ -87,30 +88,28 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(ActivitySettingBind
 //                notificationTitle = Random.nextInt(999).toString(),
 //                notificationContent = Random.nextInt(999).toString()
 //            ))
-//            var alarmManager = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//            val intent = Intent(this, AlarmReceiver::class.java)
-//            val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
+            var alarmManager = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val intent = Intent(this, AlarmReceiver::class.java)
+            val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
 //            alarmManager.cancel(pendingIntent)
-//            var calendar = Calendar.getInstance().apply {
-//                set(Calendar.DAY_OF_MONTH, 18)
-//                set(Calendar.HOUR_OF_DAY, 16)
-//                set(Calendar.MINUTE, 57)
-//                set(Calendar.SECOND, 0)
-//            }
-//            println("SET ALARM AT  ${calendar.time}")
-//
+            var calendar = Calendar.getInstance()
+            calendar.add(Calendar.MINUTE, 1)
+
+            println("SET ALARM AT  ${calendar.time}")
+            authRepository.assignmentReminderTime = calendar.time
+
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                pendingIntent
+            )
+
 //            alarmManager.setInexactRepeating(
 //                AlarmManager.RTC_WAKEUP,
 //                calendar.timeInMillis,
 //                1000 * 15,
 //                pendingIntent
 //            )
-
-            var periodic = PeriodicWorkRequestBuilder<AlarmWorker>(1, TimeUnit.MINUTES)
-                .build()
-            println("MASUK ${periodic.id}")
-            WorkManager.getInstance(this).enqueue(periodic)
-            observeWork(periodic.id)
 
         }
 
@@ -197,8 +196,56 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(ActivitySettingBind
 }
 
 class AlarmReceiver:BroadcastReceiver(){
+    @Inject
+    lateinit var notificationUtils: NotificationUtils
+
     override fun onReceive(context: Context?, intent: Intent?) {
-        var ins = Intent("com.alarm.receiver")
+        (context?.applicationContext as BaseApp).appComponent.inject(this)
+        notificationUtils.showNotification(
+            NotificationData(
+                notificationTitle = Random.nextInt(999).toString(),
+                notificationContent = "ON RECEIVE ${Calendar.getInstance().time}"
+            )
+        )
         println("MASUK ON RECEIVE ${Calendar.getInstance().time}")
+        triggerNewAlarm(context)
     }
+
+    private fun triggerNewAlarm(context: Context?){
+        var alarmManager = context?.applicationContext?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, AlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
+        var calendar = Calendar.getInstance()
+        calendar.add(Calendar.MINUTE, 2)
+        println("SET ALARM AT  ${calendar.time}")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                pendingIntent
+            )
+        }
+    }
+}
+
+
+class BootReceiver:BroadcastReceiver(){
+    override fun onReceive(context: Context?, intent: Intent?) {
+        if (intent?.action == "android.intent.action.BOOT_COMPLETED"){
+            var alarmManager = context?.applicationContext?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val intent = Intent(context, AlarmReceiver::class.java)
+            val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
+            var calendar = Calendar.getInstance()
+            calendar.add(Calendar.MINUTE, 3)
+            println("SET ALARM AT  ${calendar.time}")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.timeInMillis,
+                    pendingIntent
+                )
+            }
+        }
+    }
+
 }
