@@ -21,6 +21,7 @@ interface ApplicationComponent {
     fun authComponent(): AuthComponent.Factory
     fun homeComponent(): HomeComponent.Factory
     fun sideMenuComponent(): SideMenuComponent.Factory
+    fun studyGroupComponent(): StudyGroupComponent.Factory
 
     @Component.Factory
     interface Factory{

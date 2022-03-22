@@ -9,7 +9,6 @@ import com.fadlurahmanf.starter_app_mvp.ui.sidemenu.mynotes.tab.MyNotesFragment
 import dagger.Subcomponent
 import javax.inject.Singleton
 
-//@Singleton
 @Subcomponent
 interface SideMenuComponent {
 

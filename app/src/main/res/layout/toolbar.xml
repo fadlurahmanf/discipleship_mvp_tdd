@@ -6,10 +6,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="?actionBarSize"
         android:paddingHorizontal="@dimen/dimen_15dp"
         android:paddingBottom="@dimen/dimen_10dp"
-        android:background="@color/red">
+        android:paddingTop="?actionBarSize"
+        android:background="@color/red"
+        >
 
         <ImageView
             android:layout_width="25dp"

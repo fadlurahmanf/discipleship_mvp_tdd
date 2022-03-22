@@ -1,6 +1,7 @@
 package com.fadlurahmanf.starter_app_mvp.ui.home
 
 import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import com.fadlurahmanf.starter_app_mvp.BaseApp
@@ -20,9 +21,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         component.inject(this)
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun setup() {
         supportActionBar?.hide()
-        setScreenStyle(R.color.red, isLight = true, isFullScreen = true)
+        setScreenStyle(isLight = true, isFullScreen = true)
         addFragment(0)
         initAction()
     }

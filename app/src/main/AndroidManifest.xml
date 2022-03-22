@@ -4,12 +4,9 @@
     package="com.fadlurahmanf.starter_app_mvp">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- FOR ALARM -->
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <!-- -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- FOR ALARM -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".BaseApp"
@@ -20,8 +17,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Starter_app_mvp">
-        <activity android:name=".ui.sidemenu.language.SelectLanguageActivity"
-            android:exported="false"/>
+        <activity
+            android:name=".ui.study_group.CreateStudyGroupDetailActivity"
+            android:theme="@style/TransparentStatusBar"
+            android:exported="false" />
+        <activity
+            android:name=".ui.sidemenu.language.SelectLanguageActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.sidemenu.SettingActivity"
             android:exported="false" />
@@ -39,15 +41,15 @@
             android:exported="false" />
         <activity
             android:name=".ui.home.MainActivity"
+            android:theme="@style/TransparentStatusBar"
             android:exported="false" />
         <activity
             android:name=".ui.home.WaitlistActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.home.LandingPageActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:name=".ui.home.LandingPageActivity" android:theme="@style/TransparentStatusBar"/>
         <activity android:name=".ui.auth.LoginActivity" />
-        <activity android:name=".ui.guest_mode.GuestModeActivity" />
+        <activity android:name=".ui.guest_mode.GuestModeActivity" android:theme="@style/TransparentStatusBar"/>
         <activity android:name=".ui.example.FragmentActivity" />
         <activity android:name=".ui.example.ExampleActivity1" />
         <activity
@@ -73,21 +75,22 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".ui.sidemenu.AlarmReceiver" android:exported="false"/>
-        <receiver android:name=".ui.sidemenu.BootReceiver"
+        <receiver
+            android:name=".ui.sidemenu.AlarmReceiver"
+            android:exported="false" />
+        <receiver
+            android:name=".ui.sidemenu.BootReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
-            tools:node="remove">
-        </provider>
-
+            tools:node="remove"></provider>
     </application>
 
 </manifest>

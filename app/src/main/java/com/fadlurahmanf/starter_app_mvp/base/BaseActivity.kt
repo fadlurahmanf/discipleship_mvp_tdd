@@ -58,25 +58,22 @@ abstract class BaseActivity<VB:ViewBinding>(
         startConnectivityReceiver()
     }
 
-    open fun setScreenStyle(color:Int = R.color.white, isLight:Boolean = true, isFullScreen:Boolean=false){
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    open fun setScreenStyle(color:Int ?= null, isLight:Boolean = true, isFullScreen:Boolean = false ){
         if (isFullScreen){
             WindowCompat.setDecorFitsSystemWindows(window, false)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                window.statusBarColor = Color.TRANSPARENT
-            }
-            val window = this.window
-            val decorView = window.decorView
-            val wic = WindowInsetsControllerCompat(window, decorView)
-            wic.isAppearanceLightStatusBars = isLight
+            window.statusBarColor = Color.TRANSPARENT
+            WindowInsetsControllerCompat(this.window, this.window.decorView).isAppearanceLightStatusBars = isLight
+        }else{
+            WindowInsetsControllerCompat(this.window, this.window.decorView).isAppearanceLightStatusBars = isLight
+            window.statusBarColor = ContextCompat.getColor(this, R.color.white)
         }
 
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val window = this.window
-            val decorView = window.decorView
-            val wic = WindowInsetsControllerCompat(window, decorView)
-            wic.isAppearanceLightStatusBars = isLight
-            window.statusBarColor = ContextCompat.getColor(this, color)
-        }*/
+        if (color != null){
+            println("MASUK SINI")
+            window.statusBarColor = ContextCompat.getColor(this, R.color.white)
+        }
     }
 
     fun setTransparentStatusBar(){

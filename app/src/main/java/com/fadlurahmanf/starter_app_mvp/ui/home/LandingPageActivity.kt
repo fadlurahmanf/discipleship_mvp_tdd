@@ -1,8 +1,13 @@
 package com.fadlurahmanf.starter_app_mvp.ui.home
 
 import android.content.Intent
+import android.os.Build
 import android.view.View
+import android.view.WindowManager
+import androidx.annotation.RequiresApi
+import androidx.core.view.WindowCompat
 import com.fadlurahmanf.starter_app_mvp.BaseApp
+import com.fadlurahmanf.starter_app_mvp.R
 import com.fadlurahmanf.starter_app_mvp.base.BaseMvpActivity
 import com.fadlurahmanf.starter_app_mvp.data.repository.core.AuthRepository
 import com.fadlurahmanf.starter_app_mvp.data.response.auth.LoginResponse
@@ -33,7 +38,9 @@ class LandingPageActivity : BaseMvpActivity<LandingPagePresenter,ActivityLanding
         component.inject(this)
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun setup() {
+        supportActionBar?.hide()
         setScreenStyle(isLight = false, isFullScreen = true)
         initAction()
         initAdapter()

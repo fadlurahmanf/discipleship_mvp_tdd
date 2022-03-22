@@ -16,6 +16,7 @@ import com.fadlurahmanf.starter_app_mvp.ui.guest_mode.GuestModeActivity
 import com.fadlurahmanf.starter_app_mvp.ui.home.LandingPageActivity
 import com.fadlurahmanf.starter_app_mvp.ui.sidemenu.SettingActivity
 import com.fadlurahmanf.starter_app_mvp.ui.sidemenu.language.SelectLanguageActivity
+import com.fadlurahmanf.starter_app_mvp.ui.study_group.CreateStudyGroupDetailActivity
 import javax.inject.Inject
 
 class SplashActivity : BaseMvpActivity<SplashPresenter, ActivitySplashBinding>(ActivitySplashBinding::inflate),
@@ -61,7 +62,7 @@ class SplashActivity : BaseMvpActivity<SplashPresenter, ActivitySplashBinding>(A
 
     override fun goToGuestMode(data: CheckUpdateResponse) {
         val intent = Intent(this, GuestModeActivity::class.java)
-//        val intent = Intent(this, SettingActivity::class.java)
+//        val intent = Intent(this, CreateStudyGroupDetailActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
@@ -70,6 +71,8 @@ class SplashActivity : BaseMvpActivity<SplashPresenter, ActivitySplashBinding>(A
 
     override fun goToLandingPage(data: CheckUpdateResponse) {
         val intent = Intent(this, LandingPageActivity::class.java)
+//        val intent = Intent(this, GuestModeActivity::class.java)
+//        val intent = Intent(this, CreateStudyGroupDetailActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         finish()
         startActivity(intent)

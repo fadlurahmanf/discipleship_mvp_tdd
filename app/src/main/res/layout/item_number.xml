@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="20dp">
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/tv_number"
+        style="@style/Font.Bold.16"
+        android:text="6"
+        android:textColor="@color/red"
+        android:gravity="center"
+        android:layout_marginHorizontal="30dp"
+        android:background="@drawable/red_circle_border"/>
+</RelativeLayout>

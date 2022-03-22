@@ -37,8 +37,8 @@ class GuestModeActivity : BaseMvpActivity<GuestModePresenter, ActivityGuestModeB
     }
 
     override fun setup() {
-        setScreenStyle(R.color.white, true, isFullScreen = true)
         supportActionBar?.hide()
+        setScreenStyle(isFullScreen = true, isLight = true, color = R.color.white)
         binding?.toolbar?.ivToolbar?.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_menu_red))
         binding?.toolbar?.ivToolbar?.setBackgroundResource(R.color.white)
         presenter.getTestimonial()

@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".ui.guest_mode.GuestModeActivity"
     android:id="@+id/drawer_layout"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
     <androidx.constraintlayout.widget.ConstraintLayout
