@@ -94,15 +94,68 @@ class GroupBoardFragment : BaseMvpFragment<FragmentGroupBoardBinding, GroupBoard
         showSnackBar(message)
     }
 
+    override fun deletePostSuccess() {
+        showSnackBar(message = "Post deleted!")
+        presenter.getAllPost()
+    }
+
+    override fun deletePostFailed(message: String?) {
+        showSnackBar(message)
+    }
+
+    override fun reactPostSuccess() {
+        showSnackBar("SUCCESS")
+    }
+
+    override fun reactPostFailed(message: String?) {
+        showSnackBar(message)
+    }
+
     override fun onPostClicked(post: PostResponse?) {
 
     }
 
     override fun onMoreClicked(post: PostResponse?) {
-        showOkDialog(
-            title = "TES",
-            content = "HALO"
+        showConfirmDialog(
+            title = "Delete this post?",
+            content = "Are you sure you want delete this post?",
+            cancelText = "No, cancel",
+            confirmText = "Yes, delete",
+            confirmListener = {
+                if (post?.id != null){
+                    dismissConfirmDialog()
+                    presenter.deletePost(post.id!!)
+                }else{
+                    showSnackBar("Oops, Post Id is empty")
+                }
+            }
         )
+    }
+
+    override fun onFavoriteClicked(post: PostResponse?) {
+        if (post?.id != null){
+            if (this.listPost.filter { it -> it.id == post.id }.first().reactedType != "like"){
+                if (this.listPost.filter { it -> it.id == post.id }.first().reactedType == "pray"){
+                    val deleted = this.listPost.filter { it -> it.id == post.id }.first().reactions?.findLast { it -> it.type == "pray" }
+                    this.listPost.filter { it -> it.id == post.id }.first().reactions?.removeAll { it -> it.id == deleted?.id }
+                }
+                this.listPost.filter { it -> it.id == post.id }.first().reacted = true
+                this.listPost.filter { it -> it.id == post.id }.first().reactedType = "like"
+                this.listPost.filter { it -> it.id == post.id }.first().reactions?.add(PostResponse.Reaction(type = "like"))
+                presenter.reactPost(postId = post.id!!, type = "like")
+            }else{
+                this.listPost.filter { it -> it.id == post.id }.first().reacted = true
+                this.listPost.filter { it -> it.id == post.id }.first().reactedType = "unlike"
+                val deleted = this.listPost.filter { it -> it.id == post.id }.first().reactions?.findLast { it -> it.type == "like" }
+                this.listPost.filter { it -> it.id == post.id }.first().reactions?.removeAll { it -> it.id == deleted?.id }
+                presenter.reactPost(post.id!!, "unlike")
+            }
+            refreshRecycleView()
+        }
+    }
+
+    override fun onPrayClicked(post: PostResponse?) {
+        println("MASUK ON PRAY CLICKED ${post?.id}")
     }
 
 }

@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import java.lang.Exception
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -42,8 +43,7 @@ fun String.formatDate():String?{
 fun String.isoDateTimeToDate():Date?{
     try {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            var localDateTime = LocalDateTime.parse(this, DateTimeFormatter.ISO_DATE_TIME)
-            return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant())
+            return Date.from(Instant.parse(this))
         }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             return SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(this)
         }

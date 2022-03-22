@@ -3,6 +3,7 @@ package com.fadlurahmanf.starter_app_mvp.data.api.post
 import androidx.annotation.Nullable
 import com.fadlurahmanf.starter_app_mvp.data.response.core.BaseResponse
 import com.fadlurahmanf.starter_app_mvp.data.response.post.PostResponse
+import com.google.gson.JsonObject
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
 import retrofit2.http.*
@@ -11,7 +12,7 @@ interface PostApi {
     @GET("api/post/all")
     fun getAllPost(
         @Query("study_group_id") studyGroupId:String
-    ): Observable<BaseResponse<List<PostResponse>>>
+    ): Observable<BaseResponse<ArrayList<PostResponse>>>
 
     @Multipart
     @POST("api/post/create")
@@ -22,5 +23,10 @@ interface PostApi {
     @DELETE("api/post/delete/{id}")
     fun delete(
         @Path("id") postId:String
+    ) : Observable<BaseResponse<Nullable>>
+
+    @POST("api/post/reaction/send")
+    fun reactPost(
+        @Body body:JsonObject
     ) : Observable<BaseResponse<Nullable>>
 }

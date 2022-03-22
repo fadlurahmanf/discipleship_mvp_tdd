@@ -9,9 +9,17 @@ interface GroupBoardContract {
         fun getAllPostFirstLoaded(listPost:List<PostResponse>)
         fun getAllPostLoaded(listPost: List<PostResponse>)
         fun getAllPostFailed(message:String?)
+
+        fun deletePostSuccess()
+        fun deletePostFailed(message: String?)
+
+        fun reactPostSuccess()
+        fun reactPostFailed(message: String?)
     }
     interface Presenter{
         fun getAllPostFirst()
         fun getAllPost()
+        fun deletePost(postId:Int)
+        fun reactPost(postId: Int, type:String)
     }
 }

@@ -28,6 +28,7 @@
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/drawable/switch_track.xml" value="0.2535" />
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/drawable/white_circle.xml" value="0.1815" />
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/drawable/white_circle_border.xml" value="0.2535" />
+        <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/drawable/white_grey_border_corner_10.xml" value="0.2535" />
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/drawable/white_red_border_5_corner_30.xml" value="0.2535" />
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/drawable/white_top_corner_20.xml" value="0.2535" />
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/activity_bible_verse.xml" value="0.22" />
@@ -54,9 +55,11 @@
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/fragment_study_group.xml" value="0.31875" />
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/fragment_waitlist_first.xml" value="0.2064814814814815" />
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/header_post.xml" value="0.3359375" />
+        <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/item_attachment_pdf.xml" value="0.3359375" />
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/item_checked_text.xml" value="0.3359375" />
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/item_my_notes.xml" value="0.3359375" />
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/item_number.xml" value="0.3359375" />
+        <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/item_play_button_red.xml" value="0.3359375" />
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/item_post.xml" value="0.33" />
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/item_post_shimmer.xml" value="0.33" />
         <entry key="..\:/Users/tffaj/AndroidStudioProjects/Kotlin/Belajar/discipleship2/disciplesip2/app/src/main/res/layout/item_setting.xml" value="0.5" />

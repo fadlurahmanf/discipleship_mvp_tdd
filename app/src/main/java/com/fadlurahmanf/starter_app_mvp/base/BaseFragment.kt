@@ -94,28 +94,28 @@ abstract class BaseFragment<VB:ViewBinding>(
         cancelListener:() -> Unit ?= {dismissConfirmDialog()},
         confirmListener:() -> Unit ?= {dismissConfirmDialog()}
     ){
-//        if (confirmDialog == null){
-//            confirmDialog = ConfirmDialog()
-//            val bundle = Bundle()
-//            bundle.putString(ConfirmDialog.TITLE, title)
-//            bundle.putString(ConfirmDialog.CONTENT, content)
-//            bundle.putBoolean(ConfirmDialog.IS_CANCELABLE, isCancelable)
-//            bundle.putString(ConfirmDialog.CANCEL_TEXT, cancelText)
-//            bundle.putString(ConfirmDialog.CONFIRM_TEXT, confirmText)
-//            confirmDialog?.arguments = bundle
-//            confirmDialog?.setListener(
-//                cancel = { cancelListener() },
-//                confirm = { confirmListener() }
-//            )
-//            confirmDialog?.show(supportFragmentManager, ConfirmDialog::class.java.simpleName)
-//        }
+        if (confirmDialog == null){
+            confirmDialog = ConfirmDialog()
+            val bundle = Bundle()
+            bundle.putString(ConfirmDialog.TITLE, title)
+            bundle.putString(ConfirmDialog.CONTENT, content)
+            bundle.putBoolean(ConfirmDialog.IS_CANCELABLE, isCancelable)
+            bundle.putString(ConfirmDialog.CANCEL_TEXT, cancelText)
+            bundle.putString(ConfirmDialog.CONFIRM_TEXT, confirmText)
+            confirmDialog?.arguments = bundle
+            confirmDialog?.setListener(
+                cancel = { cancelListener() },
+                confirm = { confirmListener() }
+            )
+            confirmDialog?.show(requireActivity().supportFragmentManager, ConfirmDialog::class.java.simpleName)
+        }
     }
 
     fun dismissConfirmDialog(){
-//        if (confirmDialog != null){
-//            confirmDialog?.dismiss()
-//            confirmDialog = null
-//        }
+        if (confirmDialog != null){
+            confirmDialog?.dismiss()
+            confirmDialog = null
+        }
     }
 
     open fun showSnackBar(message: String?, typeLong:Int?=null){
@@ -123,35 +123,35 @@ abstract class BaseFragment<VB:ViewBinding>(
     }
 
     override fun forceRestart(message: String?) {
-//        showOkDialog(
-//            title = "Oops..",
-//            content = message?:"",
-//            okListener = {
-//                dismissOkDialog()
-//                val intent = Intent(this, SplashActivity::class.java)
-//                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//                startActivity(intent)
-//            }
-//        )
+        showOkDialog(
+            title = "Oops..",
+            content = message?:"",
+            okListener = {
+                dismissOkDialog()
+                val intent = Intent(requireContext(), SplashActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+            }
+        )
     }
 
     private var loadingDialog: LoadingDialog?= null
     override fun loadingDialog(loadingText:String?, isCancelable:Boolean) {
-//        if (loadingDialog == null){
-//            loadingDialog = LoadingDialog()
-//            var bundle = Bundle()
-//            bundle.putString(LoadingDialog.TEXT, loadingText)
-//            bundle.putBoolean(LoadingDialog.IS_CANCELABLE, isCancelable?:false)
-//            loadingDialog?.arguments = bundle
-//            loadingDialog?.show(supportFragmentManager, LoadingDialog::class.java.simpleName)
-//        }
+        if (loadingDialog == null){
+            loadingDialog = LoadingDialog()
+            var bundle = Bundle()
+            bundle.putString(LoadingDialog.TEXT, loadingText)
+            bundle.putBoolean(LoadingDialog.IS_CANCELABLE, isCancelable?:false)
+            loadingDialog?.arguments = bundle
+            loadingDialog?.show(requireActivity().supportFragmentManager, LoadingDialog::class.java.simpleName)
+        }
     }
 
     override fun dismissLoadingDialog() {
-//        if (loadingDialog != null){
-//            loadingDialog?.dismiss()
-//            loadingDialog = null
-//        }
+        if (loadingDialog != null){
+            loadingDialog?.dismiss()
+            loadingDialog = null
+        }
     }
 
     override fun errorScreen(message: String?) {

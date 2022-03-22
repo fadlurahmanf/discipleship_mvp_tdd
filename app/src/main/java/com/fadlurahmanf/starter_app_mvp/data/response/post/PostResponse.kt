@@ -22,9 +22,11 @@ data class PostResponse(
     @SerializedName("author")
     var author:Author ?= null,
     @SerializedName("attachments")
-    var attachments:List<Attachment> ?= null,
+    var attachments:ArrayList<Attachment> ?= null,
     @SerializedName("reactions")
-    var reactions:List<Reaction> ?= null,
+    var reactions:ArrayList<Reaction> ?= null,
+    @SerializedName("comments")
+    var comments:ArrayList<Comment> ?= null
 ){
     data class Author(
         @SerializedName("id")

@@ -6,6 +6,7 @@ import com.fadlurahmanf.starter_app_mvp.data.api.post.PostApi
 import com.fadlurahmanf.starter_app_mvp.data.entity.core.TestimonialEntity
 import com.fadlurahmanf.starter_app_mvp.data.interceptor.AuthInterceptor
 import com.fadlurahmanf.starter_app_mvp.data.repository.core.AuthRepository
+import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import javax.inject.Inject
@@ -23,5 +24,7 @@ class PostEntity @Inject constructor(
 
     fun createPost(body: List<MultipartBody.Part>) = networkService(30).createPost(body)
 
-    fun deletePost(postId:String) = networkService(30).delete(postId)
+    fun deletePost(postId:Int) = networkService(30).delete(postId.toString())
+
+    fun reactPost(body:JsonObject) = networkService(30).reactPost(body)
 }
