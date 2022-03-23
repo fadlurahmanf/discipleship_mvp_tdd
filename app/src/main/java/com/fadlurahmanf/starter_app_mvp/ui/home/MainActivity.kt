@@ -1,6 +1,7 @@
 package com.fadlurahmanf.starter_app_mvp.ui.home
 
 import android.os.Build
+import android.os.Bundle
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -25,8 +26,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     override fun setup() {
         supportActionBar?.hide()
         setScreenStyle(isLight = true, isFullScreen = true)
-        addFragment(0)
         initAction()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState == null){
+            addFragment(0)
+        }
     }
 
     private fun initAction() {
@@ -90,6 +97,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
         }
         beginTransaction.commit()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
     }
 
     private fun refreshStyleBottomNavBar(){

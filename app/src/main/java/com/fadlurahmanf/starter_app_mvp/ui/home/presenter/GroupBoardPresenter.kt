@@ -5,18 +5,22 @@ import com.fadlurahmanf.starter_app_mvp.core.extension.isoDateTimeToDate
 import com.fadlurahmanf.starter_app_mvp.core.extension.uiSubscribe
 import com.fadlurahmanf.starter_app_mvp.data.entity.post.PostEntity
 import com.fadlurahmanf.starter_app_mvp.data.repository.core.AuthRepository
+import com.fadlurahmanf.starter_app_mvp.data.repository.post.PostRepository
+import com.fadlurahmanf.starter_app_mvp.data.response.post.PostResponse
 import com.google.gson.JsonObject
 import javax.inject.Inject
 
 class GroupBoardPresenter @Inject constructor(
     var postEntity: PostEntity,
-    var authRepository: AuthRepository
+    var authRepository: AuthRepository,
+    var postRepository: PostRepository
 ) : BasePresenter<GroupBoardContract.View>(), GroupBoardContract.Presenter {
     override fun getAllPostFirst() {
         view?.getAllPostFirstLoading()
         addSubscription(postEntity.getAllPost(authRepository.groupChosen!!.id!!).uiSubscribe(
             {
                 if (it.code == 100 && it.data != null){
+                    postRepository.listPost = it.data!!.sortedByDescending { it -> it.createdAt?.isoDateTimeToDate() }.toCollection(ArrayList<PostResponse>())
                     view?.getAllPostFirstLoaded(it.data!!.sortedByDescending { it -> it.createdAt?.isoDateTimeToDate() })
                 }else{
                     view?.getAllPostFailed(it.message)
@@ -33,6 +37,7 @@ class GroupBoardPresenter @Inject constructor(
         addSubscription(postEntity.getAllPost(authRepository.groupChosen!!.id!!).uiSubscribe(
             {
                 if (it.code == 100 && it.data != null){
+                    postRepository.listPost = it.data!!.sortedByDescending { it -> it.createdAt?.isoDateTimeToDate() }.toCollection(ArrayList<PostResponse>())
                     view?.getAllPostLoaded(it.data!!)
                 }else{
                     view?.getAllPostFailed(it.message)

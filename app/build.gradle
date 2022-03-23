@@ -5,6 +5,9 @@ plugins {
     id 'kotlin-parcelize'
 }
 
+Properties properties = new Properties()
+properties.load(new FileInputStream(rootProject.file('local.properties')))
+
 android {
     compileSdkVersion 31
     buildToolsVersion "30.0.2"
@@ -17,7 +20,7 @@ android {
         versionName "1.0"
         multiDexEnabled true
 
-        buildConfigField "String", "BASE_DEV_URL", "\"${DEV_BASE_URL}\""
+        buildConfigField "String", "BASE_DEV_URL", "\"${properties["DEV_BASE_URL"]}\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

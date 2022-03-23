@@ -120,7 +120,7 @@ abstract class BasePreference(context: Context) {
         }catch (e:Exception){ }
     }
 
-    protected fun <T> getListData(key: String, classOfT:Class<T>): List<T>?{
+    protected fun <T> getListData(key: String, classOfT:Class<T>): ArrayList<T>?{
         try {
             val rawString:String? = getString(key)
             val list:ArrayList<T> = arrayListOf<T>()

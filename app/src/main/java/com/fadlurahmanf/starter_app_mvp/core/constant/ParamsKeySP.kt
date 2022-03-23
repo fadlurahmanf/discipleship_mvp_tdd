@@ -27,4 +27,7 @@ object ParamsKeySP {
     const val MY_SUBSCRIPTION = "MY_SUBSCRIPTION"
     const val ASSIGNMENT_REMINDER_TIME = "ASSIGNMENT_REMINDER_TIME"
 
+    //POST REPOSITORY
+    const val LIST_POST = "LIST_POST"
+
 }

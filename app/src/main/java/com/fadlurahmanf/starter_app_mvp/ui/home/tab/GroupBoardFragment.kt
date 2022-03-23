@@ -1,12 +1,13 @@
 package com.fadlurahmanf.starter_app_mvp.ui.home.tab
 
 import android.content.Intent
+import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import com.fadlurahmanf.starter_app_mvp.BaseApp
-import com.fadlurahmanf.starter_app_mvp.base.BaseActivity
 import com.fadlurahmanf.starter_app_mvp.base.BaseMvpFragment
+import com.fadlurahmanf.starter_app_mvp.data.repository.post.PostRepository
 import com.fadlurahmanf.starter_app_mvp.data.response.post.PostResponse
-import com.fadlurahmanf.starter_app_mvp.databinding.ActivityMainBinding
 import com.fadlurahmanf.starter_app_mvp.databinding.FragmentGroupBoardBinding
 import com.fadlurahmanf.starter_app_mvp.di.component.HomeComponent
 import com.fadlurahmanf.starter_app_mvp.ui.auth.LoginActivity
@@ -25,6 +26,13 @@ class GroupBoardFragment : BaseMvpFragment<FragmentGroupBoardBinding, GroupBoard
         component.inject(this)
     }
 
+    companion object{
+        const val RV_POST_STATE = "RV_POST_STATE"
+    }
+
+    private var rvPostBundle:Bundle ?= null
+    private var rvPostState : Parcelable ?= null
+
     @Inject
     lateinit var presenter: GroupBoardPresenter
 
@@ -32,10 +40,20 @@ class GroupBoardFragment : BaseMvpFragment<FragmentGroupBoardBinding, GroupBoard
         presenter.view = this
     }
 
+    @Inject
+    lateinit var postRepository:PostRepository
+
     override fun setup() {
         initAction()
         initAdapter()
-        presenter.getAllPostFirst()
+        if (postRepository.listPost.isNullOrEmpty()){
+            println("MASUK NULL OR EMPTY")
+            presenter.getAllPostFirst()
+        }else{
+            println("MASUK SECOND")
+            getAllPostLoaded(postRepository.listPost!!)
+            presenter.getAllPost()
+        }
     }
 
     private fun initAction() {
@@ -85,9 +103,24 @@ class GroupBoardFragment : BaseMvpFragment<FragmentGroupBoardBinding, GroupBoard
 
     override fun getAllPostLoaded(listPost: List<PostResponse>) {
         binding?.swipeRefresh?.isRefreshing = false
+        binding?.llPostShimmer?.visibility = View.GONE
+        binding?.rvPost?.visibility = View.VISIBLE
         this.listPost.clear()
         this.listPost.addAll(listPost)
         refreshRecycleView()
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (savedInstanceState != null){
+            var state : Parcelable? = savedInstanceState.getParcelable(RV_POST_STATE)
+            binding?.rvPost?.layoutManager?.onRestoreInstanceState(state)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelable(RV_POST_STATE, binding?.rvPost?.layoutManager?.onSaveInstanceState())
+        super.onSaveInstanceState(outState)
     }
 
     override fun getAllPostFailed(message: String?) {
