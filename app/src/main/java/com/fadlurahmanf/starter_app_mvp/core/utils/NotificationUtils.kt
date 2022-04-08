@@ -48,17 +48,6 @@ class NotificationUtils @Inject constructor(var context: Context) {
         createNotificationChannel(data)
         buildNotification(data)
         notificationManager.notify(data.notificationId, notificationBuilder.build())
-//        buildNotification(data)
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            val channel = NotificationChannel(data.channelId,
-//                data.channelId,
-//                NotificationManager.IMPORTANCE_HIGH,
-//            )
-//            notificationManager.createNotificationChannel(channel)
-//            notificationBuilder.setChannelId(data.channelId)
-//        }
-//        notificationManager.notify(0, notificationBuilder.build())
     }
 
 }

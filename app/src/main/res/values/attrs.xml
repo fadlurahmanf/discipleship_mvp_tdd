@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomToolbar">
+        <attr name="title" format="string"/>
+        <attr name="backType" format="enum">
+            <enum name="back" value="0"/>
+            <enum name="close" value="1"/>
+        </attr>
+        <!--<attr name="type" format="enum">
+            <enum name="red" value="2"/>
+            <enum name="white" value="3"/>
+        </attr>-->
+    </declare-styleable>
+</resources>

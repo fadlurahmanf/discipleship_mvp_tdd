@@ -8,6 +8,13 @@
     android:gravity="center"
     tools:context=".ui.example.ExampleActivity1">
 
+    <com.fadlurahmanf.starter_app_mvp.core.custom_lib.CustomToolbar4
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/custom_toolbar"
+        app:backType="close"
+        app:title="HALO"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

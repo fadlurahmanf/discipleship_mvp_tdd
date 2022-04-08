@@ -2,23 +2,22 @@ package com.fadlurahmanf.starter_app_mvp.ui.example
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.view.View
 import android.widget.Toast
-import androidx.core.app.NotificationCompat
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.fadlurahmanf.starter_app_mvp.BaseApp
-import com.fadlurahmanf.starter_app_mvp.ui.core.SplashActivity
 import com.fadlurahmanf.starter_app_mvp.base.BaseMvpActivity
 import com.fadlurahmanf.starter_app_mvp.core.services.ExampleRxWorker
 import com.fadlurahmanf.starter_app_mvp.core.services.ExampleWorkManager
 import com.fadlurahmanf.starter_app_mvp.core.utils.NotificationUtils
-import com.fadlurahmanf.starter_app_mvp.data.model.example.NotificationData
 import com.fadlurahmanf.starter_app_mvp.data.repository.example.ExampleRepository
 import com.fadlurahmanf.starter_app_mvp.data.response.core.BaseResponse
 import com.fadlurahmanf.starter_app_mvp.databinding.ActivityExample1Binding
 import com.fadlurahmanf.starter_app_mvp.di.component.ExampleComponent
+import com.fadlurahmanf.starter_app_mvp.ui.core.SplashActivity
 import com.google.gson.Gson
 import java.util.*
 import javax.inject.Inject
@@ -42,8 +41,13 @@ class ExampleActivity1 : BaseMvpActivity<ExampleActivity1Presenter, ActivityExam
     @Inject
     lateinit var exampleRepository: ExampleRepository
 
+
     private lateinit var uuidObserve: UUID
     override fun setup() {
+        binding?.customToolbar?.leftIcon?.setOnClickListener {
+            println("MASUK LEFT ICON")
+        }
+
         binding?.button1?.setOnClickListener {
             presenter.getAllPost()
         }
